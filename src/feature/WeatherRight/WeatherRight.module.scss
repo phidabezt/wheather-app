@@ -1,0 +1,12 @@
+.weatherRight {
+  width: 42%;
+  padding: var(--padding-3) var(--padding-4);
+  color: var(--color-primary);
+  background: rgb(7, 3, 57);
+  background: linear-gradient(
+    90deg,
+    rgba(7, 3, 57, 1) 0%,
+    rgba(29, 29, 185, 1) 100%,
+    rgba(29, 29, 185, 0.6617997540813201) 100%
+  );
+}

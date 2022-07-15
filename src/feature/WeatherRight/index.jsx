@@ -6,12 +6,12 @@ import SunInfo from '../SunInfo'
 import classes from './WeatherRight.module.scss'
 
 export default function WeatherRight(props) {
-  const { graphOption, graphSeries } = props
+  const { rainData, rainCategories } = props
   return (
     <div className={classes.weatherRight}>
       <LocationInfo />
       <BasicInfo />
-      <RainChanse graphOption={graphOption} graphSeries={graphSeries} />
+      <RainChanse rainData={rainData} rainCategories={rainCategories} />
       <SunInfo />
     </div>
   )

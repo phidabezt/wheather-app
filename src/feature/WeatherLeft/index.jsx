@@ -5,12 +5,12 @@ import TodayOverview from '../TodayOverview'
 import ChartArea from '../ChartArea'
 
 export default function WeatherLeft(props) {
-  const { graphOption, graphSeries } = props
+  const { degreeData, degreeCategories } = props
   return (
     <div className={classes['weather__left']}>
       <SearchBar />
       <TodayOverview />
-      <ChartArea graphOption={graphOption} graphSeries={graphSeries} />
+      <ChartArea degreeData={degreeData} degreeCategories={degreeCategories} />
     </div>
   )
 }

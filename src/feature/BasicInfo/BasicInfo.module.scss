@@ -9,8 +9,10 @@
     &__icon {
       font-size: 50px;
       margin-right: 10px;
+      filter: var(--shadow-svg);
     }
     &__text {
+      text-shadow: var(--shadow-text);
       margin-top: 0.5rem;
       font-size: 2rem;
       font-weight: 200;

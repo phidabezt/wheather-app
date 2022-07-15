@@ -4,7 +4,6 @@ import Chart from 'react-apexcharts'
 
 export default function ChartArea(props) {
   const { degreeData, degreeCategories } = props
-  console.log(degreeCategories, degreeData)
   const graphStyle = {
     options: {
       chart: {

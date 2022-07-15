@@ -1,15 +1,30 @@
-import React, { useState } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-  faSearch,
-  faMapLocationDot,
-  faWind,
-} from '@fortawesome/free-solid-svg-icons'
+import React, { useState, useEffect } from 'react'
 import './index.scss'
 import WeatherLeft from './WeatherLeft'
 import WeatherRight from './WeatherRight'
+import weatherApi from '../api/weatherApi'
 
 export default function Weather() {
+  const [weatherData, setWeatherData] = useState({})
+  useEffect(() => {
+    const fetchWeatherData = async () => {
+      try {
+        const searchParams = {
+          q: 'london',
+        }
+        const response = await weatherApi.getWeatherData(
+          'weather',
+          searchParams
+        )
+        console.log(response)
+      } catch (err) {
+        console.log('Failed to fetch weather data', err)
+      }
+    }
+
+    fetchWeatherData()
+  })
+
   const [degreeData, setDegreeData] = useState([30, 40, 45, 50, 49, 45, 40, 31])
   const degreeCategories = [
     '00:00',

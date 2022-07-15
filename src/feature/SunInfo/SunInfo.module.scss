@@ -2,9 +2,10 @@
   &__inner {
     display: block;
     color: var(--color-blue-2);
+    margin-top: 0.5rem;
 
     &__grids {
-      margin-top: var(--margin-1);
+      margin-top: var(--margin-3);
       display: flex;
       justify-content: space-between;
 
@@ -15,13 +16,11 @@
         padding: var(--padding-1);
         background-color: var(--color-blue-6);
         border-radius: 20px;
-        width: 45%;
+        width: 49%;
 
         &__icon {
           grid-row: 1 / 4;
-          text-align: center;
-          font-size: 3rem;
-          color: var(--color-primary);
+          height: 3rem;
           margin-right: 15px;
           filter: var(--shadow-svg);
         }
@@ -32,6 +31,12 @@
           font-size: 18px;
           font-weight: 450;
           color: var(--color-blue-2);
+          &__rise {
+            color: gold;
+          }
+          &__set {
+            color: var(--color-secondary);
+          }
         }
 
         &__value {

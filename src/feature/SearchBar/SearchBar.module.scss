@@ -26,7 +26,7 @@
       align-items: center;
       margin-left: 2rem;
       &__text {
-        background-color: var(--color-blue-3);
+        background-color: var(--color-blue-4);
         border: none;
         padding: var(--padding-1);
         outline: none;
@@ -73,6 +73,10 @@
         &:hover {
           color: var(--color-blue-1);
           transform: translateY(-3px);
+        }
+
+        &__active {
+          color: var(--color-blue-1);
         }
       }
     }

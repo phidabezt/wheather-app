@@ -1,15 +1,15 @@
 import React from 'react'
 import classes from './BasicInfo.module.scss'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCloud, faCloudMoon } from '@fortawesome/free-solid-svg-icons'
+import IconCloudMoon from '../../animated/overcast-night.svg'
 
 export default function BasicInfo() {
   return (
     <div className={classes.basicInfo}>
       <div className="basicInfo__degree">
-        <FontAwesomeIcon
-          className={classes['basicInfo__degree__icon']}
-          icon={faCloudMoon}
+        <img
+          src={IconCloudMoon}
+          alt="cloud-moon"
+          className="basicInfo__degree__icon"
         />
         <h3 className={classes['basicInfo__degree__text']}>20&deg;C</h3>
       </div>

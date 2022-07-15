@@ -16,7 +16,7 @@ export default function SearchBar() {
 
         <div className={classes['search__inner__input']}>
           <input
-            placeholder="Search location here"
+            placeholder="Search for city ..."
             className={classes['search__inner__input__text']}
           />
           <FontAwesomeIcon
@@ -31,7 +31,11 @@ export default function SearchBar() {
         </div>
 
         <div className={classes['search__inner__degree']}>
-          <p className={classes['search__inner__degree__text']}>C&deg;</p>
+          <p
+            className={`${classes['search__inner__degree__text']} ${classes['search__inner__degree__text__active']}`}
+          >
+            C&deg;
+          </p>
           <span>|</span>
           <p className={classes['search__inner__degree__text']}>F&deg;</p>
         </div>

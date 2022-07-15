@@ -1,12 +1,9 @@
 import React from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-  faWind,
-  faCloudRain,
-  faWater,
-  faSun,
-} from '@fortawesome/free-solid-svg-icons'
 import classes from './TodayOverview.module.scss'
+import IconWind from '../../animated/dust-wind.svg'
+import IconCloudRain from '../../animated/rain.svg'
+import IconPressure from '../../animated/tornado.svg'
+import IconSun from '../../animated/uv-index.svg'
 
 export default function TodayOverview() {
   return (
@@ -14,12 +11,11 @@ export default function TodayOverview() {
       <div className={classes['overview__inner']}>
         <h3 className={classes['overview__inner__header']}>Today overview</h3>
         <div className={classes['overview__inner__grids']}>
-          <div
-            className={`${classes['overview__inner__grids__grid']} ${classes['grid__1']}`}
-          >
-            <FontAwesomeIcon
+          <div className={`${classes['overview__inner__grids__grid']}`}>
+            <img
+              src={IconWind}
+              alt="windy"
               className={classes['overview__inner__grids__grid__icon']}
-              icon={faWind}
             />
             <p className={classes['overview__inner__grids__grid__title']}>
               Wind Speed
@@ -28,12 +24,11 @@ export default function TodayOverview() {
               12 km/h
             </p>
           </div>
-          <div
-            className={`${classes['overview__inner__grids__grid']} ${classes['grid__2']}`}
-          >
-            <FontAwesomeIcon
+          <div className={`${classes['overview__inner__grids__grid']}`}>
+            <img
+              src={IconCloudRain}
+              alt="cloud-rain"
               className={classes['overview__inner__grids__grid__icon']}
-              icon={faCloudRain}
             />
             <p className={classes['overview__inner__grids__grid__title']}>
               Rain Chanse
@@ -42,12 +37,11 @@ export default function TodayOverview() {
               24 %
             </p>
           </div>
-          <div
-            className={`${classes['overview__inner__grids__grid']} ${classes['grid__3']}`}
-          >
-            <FontAwesomeIcon
+          <div className={`${classes['overview__inner__grids__grid']}`}>
+            <img
+              src={IconPressure}
+              alt="pressure"
               className={classes['overview__inner__grids__grid__icon']}
-              icon={faWater}
             />
             <p className={classes['overview__inner__grids__grid__title']}>
               Pressure
@@ -56,12 +50,11 @@ export default function TodayOverview() {
               720 hpa
             </p>
           </div>
-          <div
-            className={`${classes['overview__inner__grids__grid']} ${classes['grid__4']}`}
-          >
-            <FontAwesomeIcon
+          <div className={`${classes['overview__inner__grids__grid']}`}>
+            <img
+              src={IconSun}
+              alt="UV index"
               className={classes['overview__inner__grids__grid__icon']}
-              icon={faSun}
             />
             <p className={classes['overview__inner__grids__grid__title']}>
               Uv Index

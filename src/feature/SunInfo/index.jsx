@@ -1,6 +1,6 @@
 import React from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSun, faMoon } from '@fortawesome/free-solid-svg-icons'
+import IconSunRise from '../../animated/clear-day.svg'
+import IconSunSet from '../../animated/haze-day.svg'
 import classes from './SunInfo.module.scss'
 
 export default function SunInfo() {
@@ -10,24 +10,36 @@ export default function SunInfo() {
         <h3 className="sunInfo__inner__tilte">Sunrise & Sunset</h3>
         <div className={classes['sunInfo__inner__grids']}>
           <div className={classes['sunInfo__inner__grids__grid']}>
-            <FontAwesomeIcon
+            <img
+              src={IconSunRise}
+              alt="sunrise"
               className={classes['sunInfo__inner__grids__grid__icon']}
-              icon={faSun}
             />
             <p className={classes['sunInfo__inner__grids__grid__title']}>
-              Sunrise
+              Sun
+              <span
+                className={classes['sunInfo__inner__grids__grid__title__rise']}
+              >
+                rise
+              </span>
             </p>
             <p className={classes['sunInfo__inner__grids__grid__value']}>
               4:20 <span>AM</span>
             </p>
           </div>
           <div className={classes['sunInfo__inner__grids__grid']}>
-            <FontAwesomeIcon
+            <img
+              src={IconSunSet}
+              alt="sunset"
               className={classes['sunInfo__inner__grids__grid__icon']}
-              icon={faMoon}
             />
             <p className={classes['sunInfo__inner__grids__grid__title']}>
-              Sunset
+              Sun
+              <span
+                className={classes['sunInfo__inner__grids__grid__title__set']}
+              >
+                set
+              </span>
             </p>
             <p className={classes['sunInfo__inner__grids__grid__value']}>
               5:50 <span>PM</span>

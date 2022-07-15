@@ -1,4 +1,10 @@
 import React, { useState } from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+  faSearch,
+  faMapLocationDot,
+  faWind,
+} from '@fortawesome/free-solid-svg-icons'
 import './index.scss'
 import WeatherLeft from './WeatherLeft'
 import WeatherRight from './WeatherRight'

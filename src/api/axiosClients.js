@@ -9,10 +9,11 @@ const axiosClient = axios.create({
   baseURL: process.env.REACT_APP_API_URL,
   headers: {
     'content-type': 'application/json',
-    appid: process.env.API_KEY,
+    // appid: process.env.REACT_APP_API_KEY,
   },
   paramsSerializer: params => queryString.stringify(params),
 })
+
 axiosClient.interceptors.request.use(async config => {
   // Handle token here ...
   return config

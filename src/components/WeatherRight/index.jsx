@@ -4,6 +4,7 @@ import LocationInfo from '../LocationInfo';
 import RainChanse from '../RainChanse';
 import SunInfo from '../SunInfo';
 import classes from './WeatherRight.module.scss';
+import PropTypes from 'prop-types';
 
 function WeatherRight(props) {
     const { rainData, rainCategories } = props;

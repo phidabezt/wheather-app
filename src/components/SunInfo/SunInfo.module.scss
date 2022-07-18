@@ -1,0 +1,50 @@
+.sun-info {
+  display: block;
+  color: var(--color-blue-2);
+  margin-top: 0.5rem;
+
+  &__grids {
+    margin-top: var(--margin-3);
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    grid-template-rows: 1fr 0.5fr;
+    padding: var(--padding-1);
+    background-color: var(--color-blue-6);
+    border-radius: 20px;
+    width: 49%;
+  }
+
+  &__icon {
+    grid-row: 1 / 4;
+    height: 3rem;
+    margin-right: 15px;
+    filter: var(--shadow-svg);
+  }
+
+  &__title {
+    grid-column: 2 / 3;
+    grid-row: 1 / 2;
+    font-size: 18px;
+    font-weight: 450;
+    color: var(--color-blue-2);
+    &--rise {
+      color: gold;
+    }
+    &--set {
+      color: var(--color-secondary);
+    }
+  }
+
+  &__value {
+    grid-column: 2 / 3;
+    grid-row: 2 / 3;
+    font-size: 25px;
+    font-weight: 700;
+    color: var(--color-blue-2);
+  }
+}

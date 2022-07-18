@@ -1,13 +1,13 @@
 import React from 'react'
-import classes from './ChartArea.module.scss'
+import classes from './RainChanse.module.scss'
 import Chart from 'react-apexcharts'
 
-export default function ChartArea(props) {
-  const { degreeData, degreeCategories } = props
+export default function RainChanse(props) {
+  const { rainData, rainCategories } = props
   const graphStyle = {
     options: {
       chart: {
-        id: 'basic-bar',
+        id: 'rain-bar',
         parentHeightOffset: 0,
         zoom: {
           enabled: false,
@@ -15,19 +15,23 @@ export default function ChartArea(props) {
         toolbar: {
           show: false,
         },
-        offsetX: 5,
+        foreColor: 'white',
       },
       fill: {
         colors: ['#89cff0'],
         type: 'gradient',
       },
-
+      plotOptions: {
+        bar: {
+          borderRadius: 10,
+          horizontal: true,
+        },
+      },
       dataLabels: {
         enabled: true,
-        offsetY: -5,
+        textAnchor: 'middle',
         style: {
-          fontSize: '17px',
-          fontFamily: 'Franklin Gothic Medium, Arial, sans-serif',
+          fontSize: '20px',
           colors: ['#333', '#999'],
         },
         background: {
@@ -39,26 +43,32 @@ export default function ChartArea(props) {
         colors: ['#46c2ff'],
         width: 2,
       },
-
-      legend: {
+      grid: {
         show: false,
       },
-      grid: {
-        show: true,
+      tooltip: {
+        enabled: false,
       },
       xaxis: {
-        categories: degreeCategories,
+        categories: rainCategories,
+        show: false,
+        labels: {
+          show: false,
+        },
+        axisBorder: {
+          show: false,
+        },
+        axisTicks: {
+          show: false,
+        },
+      },
+      yaxis: {
         labels: {
           style: {
             fontSize: '15px',
             fontWeight: 'bold',
             fontFamily: 'Franklin Gothic Medium, sans-serif',
           },
-        },
-      },
-      yaxis: {
-        labels: {
-          show: false,
         },
         axisBorder: {
           show: false,
@@ -70,19 +80,19 @@ export default function ChartArea(props) {
     },
     series: [
       {
-        name: 't °C',
-        data: degreeData,
+        name: '%',
+        data: rainData,
       },
     ],
   }
   return (
-    <div className={classes.chart}>
-      <h3 className={classes['chart__title']}>Hourly Temperature</h3>
+    <div className={classes['rain-chanse']}>
+      <h3>Hourly Rain Chanse (%)</h3>
       <Chart
         options={graphStyle.options}
         series={graphStyle.series}
-        type="area"
-        height="300"
+        type="bar"
+        height="250"
       />
     </div>
   )

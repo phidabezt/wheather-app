@@ -1,12 +1,12 @@
-import './App.css'
-import Wheather from './feature/index'
+import './App.css';
+import MainPage from './pages/Main/index';
 
 function App() {
-  return (
-    <div className="App">
-      <Wheather />
-    </div>
-  )
+    return (
+        <div className="App">
+            <MainPage />
+        </div>
+    );
 }
 
-export default App
+export default App;

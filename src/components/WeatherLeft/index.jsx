@@ -21,4 +21,4 @@ WeatherLeft.propTypes = {
     degreeCategories: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
-export default ƯWeatherLeft;
+export default WeatherLeft;

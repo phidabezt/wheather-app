@@ -1,0 +1,24 @@
+.basic-info {
+  margin: 2rem 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: var(--padding-1);
+  border-bottom: 1px solid var(--color-quaternary);
+  &__icon {
+    margin-right: 10px;
+    filter: var(--shadow-svg);
+  }
+  &__degree {
+    text-shadow: var(--shadow-text);
+    margin-top: 0.5rem;
+    font-size: 2rem;
+    font-weight: 200;
+    position: relative;
+    color: var(--color-secondary);
+  }
+  &__description {
+    font-size: 20px;
+    color: var(--color-secondary);
+  }
+}

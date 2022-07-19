@@ -1,115 +1,94 @@
-import React, { useState, useEffect } from 'react'
-import './main.scss'
-import WeatherLeft from '../../components/WeatherLeft'
-import WeatherRight from '../../components/WeatherRight'
-import weatherApi from '../../api/weatherApi'
-import queryString from 'query-string'
+import React, { useState, useEffect } from 'react';
+import './main.scss';
+import WeatherLeft from '../../components/WeatherLeft';
+import WeatherRight from '../../components/WeatherRight';
+import weatherApi from '../../api/weatherApi';
+import queryString from 'query-string';
 
 export default function MainPage() {
-  const [weatherData, setWeatherData] = useState({})
-  const [forecastData, setForecastData] = useState({})
+  const [forecastData, setForecastData] = useState({});
+  const [timeInfo, setTimeInfo] = useState({});
 
-  // useEffect(() => {
-  //   const fetchWeatherData = async () => {
-  //     try {
-  //       const searchParams = {
-  //         q: 'london',
-  //         appid: process.env.REACT_APP_API_KEY,
-  //       }
-  //       const response = await weatherApi.getWeatherData(
-  //         'weather',
-  //         searchParams
-  //       )
-  //       setWeatherData(formatCurrentWeather(response))
-  //     } catch (err) {
-  //       console.log('Failed to fetch weather data', err)
-  //     }
-  //   }
+  useEffect(() => {
+    const fetchWeatherData = async () => {
+      try {
+        const responseLocation = await weatherApi.getWeatherData('weather', {
+          q: 'london',
+          appid: process.env.REACT_APP_API_KEY,
+        });
+        const { lat, lon } = responseLocation.coord;
 
-  //   fetchWeatherData()
-  // }, [])
+        const responseForecast = await weatherApi.getWeatherData('onecall', {
+          lat,
+          lon,
+          appid: process.env.REACT_APP_API_KEY,
+          units: 'metric',
+        });
+        setForecastData(responseForecast);
+      } catch (err) {
+        console.log('Failed to fetch weather data', err);
+      }
+    };
 
-  // useEffect(() => {
-  //   const fetchForecastData = async () => {
-  //     try {
-  //       const searchParams = {
-  //         lat: weatherData.lat,
-  //         lon: weatherData.lon,
-  //         appid: process.env.REACT_APP_API_KEY,
-  //         units: 'metric',
-  //       }
-  //       const response = await weatherApi.getWeatherData(
-  //         'onecall',
-  //         searchParams
-  //       )
-  //       setForecastData(response)
-  //     } catch (err) {
-  //       console.log('Failed to fetch weather forecast data', err)
-  //     }
-  //   }
+    fetchWeatherData();
+  }, []);
 
-  //   fetchForecastData()
-  // }, [weatherData])
-  // console.log('forecastData', forecastData)
+  useEffect(() => {
+    const formatTimeCurrent = () => {
+      const { current, timezone } = forecastData;
+      setTimeInfo({
+        localDay: getLocalDay(current.dt, timezone),
+        localMonth: getLocalMonth(current.dt, timezone),
+        localTime: getLocalTime(current.dt, timezone),
+        locationName: timezone.replace('/', ', '),
+      });
+    };
 
-  const formatCurrentWeather = data => {
-    const {
-      coord: { lon, lat },
-      main: { temp, feels_like, temp_min, temp_max, humidity },
-      name,
-      dt,
-      sys: { sunrise, sunset, country },
-      weather,
-      wind: { speed },
-    } = data
+    formatTimeCurrent();
+  }, [forecastData]);
 
-    const { main: details, icon } = weather[0]
+  const getLocalTime = (dt, timezone) => {
+    const date = new Date(dt * 1000);
+    const time = date.toLocaleString('en-US', {
+      timeZone: timezone,
+      hour: 'numeric',
+      minute: 'numeric',
+      hour12: true,
+    });
+    return time;
+  };
 
-    return {
-      lat,
-      lon,
-      temp,
-      feels_like,
-      temp_min,
-      temp_max,
-      humidity,
-      name,
-      dt,
-      sunrise,
-      sunset,
-      country,
-      details,
-      icon,
-      speed,
-    }
-  }
+  const getLocalMonth = (dt, timezone) => {
+    const date = new Date(dt * 1000);
+    const month = date.toLocaleString('en-US', {
+      timeZone: timezone,
+      month: 'long',
+      year: 'numeric',
+    });
+    return month;
+  };
 
-  const formatForecastWeather = data => {
-    const { timezone, daily, hourly } = data
-    daily = daily.slice(1, 6).map()
-  }
+  const getLocalDay = (dt, timezone) => {
+    const date = new Date(dt * 1000);
+    const day = date.toLocaleString('en-US', {
+      timeZone: timezone,
+      weekday: 'long',
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    });
+    return day;
+  };
 
-  const [degreeData, setDegreeData] = useState([30, 40, 45, 50, 49, 45, 40, 31])
-  const degreeCategories = [
-    '00:00',
-    '03:00',
-    '06:00',
-    '09:00',
-    '12:00',
-    '15:00',
-    '18:00',
-    '21:00',
-  ]
-  const [rainData, setRainData] = useState([30, 20, 40, 50])
-  const rainCategories = ['7PM', '8PM', '9PM', '10PM']
+  const [degreeData, setDegreeData] = useState([30, 40, 45, 50, 49, 45, 40, 31]);
+  const degreeCategories = ['00:00', '03:00', '06:00', '09:00', '12:00', '15:00', '18:00', '21:00'];
+  const [rainData, setRainData] = useState([30, 20, 40, 50]);
+  const rainCategories = ['7PM', '8PM', '9PM', '10PM'];
 
   return (
     <section className="weather">
-      <WeatherLeft
-        degreeData={degreeData}
-        degreeCategories={degreeCategories}
-      />
-      <WeatherRight rainData={rainData} rainCategories={rainCategories} />
+      <WeatherLeft degreeData={degreeData} degreeCategories={degreeCategories} timeInfo={timeInfo} />
+      <WeatherRight rainData={rainData} rainCategories={rainCategories} timeInfo={timeInfo} />
     </section>
-  )
+  );
 }

@@ -6,10 +6,10 @@ import ChartArea from '../ChartArea';
 import PropTypes from 'prop-types';
 
 function WeatherLeft(props) {
-  const { degreeData, degreeCategories } = props;
+  const { degreeData, degreeCategories, timeInfo } = props;
   return (
     <div className={classes['weather-left']}>
-      <SearchBar />
+      <SearchBar timeInfo={timeInfo} />
       <TodayOverview />
       <ChartArea degreeData={degreeData} degreeCategories={degreeCategories} />
     </div>

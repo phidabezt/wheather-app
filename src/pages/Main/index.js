@@ -38,6 +38,9 @@ export default function MainPage() {
       });
       setForecastData(responseForecast);
     } catch (err) {
+      if (err.response.status === 404) {
+        alert('City not found');
+      }
       console.log('Failed to fetch weather data', err);
     }
   };

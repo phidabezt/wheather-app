@@ -6,11 +6,11 @@ import ChartArea from '../ChartArea';
 import PropTypes from 'prop-types';
 
 function WeatherLeft(props) {
-  const { degreeData, degreeCategories, timeInfo, setSearchText, formatTimeCurrent } = props;
+  const { degreeData, degreeCategories, timeInfo, weatherInfo, handleSearchSubmit, handleSearchChange } = props;
   return (
     <div className={classes['weather-left']}>
-      <SearchBar timeInfo={timeInfo} setSearchText={setSearchText} formatTimeCurrent={formatTimeCurrent} />
-      <TodayOverview />
+      <SearchBar timeInfo={timeInfo} handleSearchSubmit={handleSearchSubmit} handleSearchChange={handleSearchChange} />
+      <TodayOverview weatherInfo={weatherInfo} />
       <ChartArea degreeData={degreeData} degreeCategories={degreeCategories} />
     </div>
   );

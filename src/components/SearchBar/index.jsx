@@ -3,7 +3,7 @@ import classes from './SearchBar.module.scss';
 import SearchTag from '../SearchTag';
 
 export default function SearchBar(props) {
-  const { timeInfo, setSearchText, formatTimeCurrent } = props;
+  const { timeInfo, handleSearchSubmit, handleSearchChange } = props;
   const placeholder = 'Search for city ...';
 
   return (
@@ -14,7 +14,11 @@ export default function SearchBar(props) {
       </div>
 
       <div className={classes['search__interaction']}>
-        <SearchTag placeholder={placeholder} setSearchText={setSearchText} formatTimeCurrent={formatTimeCurrent} />
+        <SearchTag
+          placeholder={placeholder}
+          handleSearchSubmit={handleSearchSubmit}
+          handleSearchChange={handleSearchChange}
+        />
       </div>
 
       <div className={classes['search__degree']}>

@@ -3,7 +3,7 @@ import classes from './SearchBar.module.scss';
 import SearchTag from '../SearchTag';
 
 export default function SearchBar(props) {
-  const { timeInfo, handleSearchSubmit, handleSearchChange } = props;
+  const { timeInfo, handleSearchSubmit, handleSearchChange, units, setUnits } = props;
   const placeholder = 'Search for city ...';
 
   return (
@@ -22,9 +22,23 @@ export default function SearchBar(props) {
       </div>
 
       <div className={classes['search__degree']}>
-        <p className={`${classes['search__icon']} ${classes['search__icon--active']}`}>C&deg;</p>
+        <p
+          className={`${classes['search__icon']} ${units === 'metric' ? `${classes['search__icon--active']}` : ''}`}
+          onClick={() => {
+            setUnits('metric');
+          }}
+        >
+          C&deg;
+        </p>
         <span>|</span>
-        <p className={classes['search__icon']}>F&deg;</p>
+        <p
+          className={`${classes['search__icon']} ${units === 'imperial' ? `${classes['search__icon--active']}` : ''}`}
+          onClick={() => {
+            setUnits('imperial');
+          }}
+        >
+          F&deg;
+        </p>
       </div>
     </div>
   );

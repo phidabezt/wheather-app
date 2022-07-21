@@ -8,12 +8,13 @@ export default function MainPage() {
   const [forecastData, setForecastData] = useState();
   const [timeInfo, setTimeInfo] = useState({});
   const [weatherInfo, setWeatherInfo] = useState({});
-  const [searchText, setSearchText] = useState();
+  const [searchText, setSearchText] = useState('Hanoi');
+  const [units, setUnits] = useState('metric');
 
   // for default display when first load
-  // useEffect(() => {
-  //   fetchWeatherData();
-  // }, []);
+  useEffect(() => {
+    fetchWeatherData(searchText);
+  }, [units]);
 
   useEffect(() => {
     if (forecastData) {
@@ -22,7 +23,7 @@ export default function MainPage() {
     }
   }, [forecastData]);
 
-  const fetchWeatherData = async () => {
+  const fetchWeatherData = async (searchText) => {
     try {
       const responseLocation = await weatherApi.getWeatherData('weather', {
         q: searchText,
@@ -33,7 +34,7 @@ export default function MainPage() {
         lat,
         lon,
         appid: process.env.REACT_APP_API_KEY,
-        units: 'metric',
+        units,
       });
       setForecastData(responseForecast);
     } catch (err) {
@@ -43,7 +44,7 @@ export default function MainPage() {
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
-    fetchWeatherData();
+    fetchWeatherData(searchText);
   };
 
   const handleSearchChange = (e) => {
@@ -103,6 +104,20 @@ export default function MainPage() {
     sunrise = getLocalTime(sunrise, timezone);
     sunset = getLocalTime(sunset, timezone);
 
+    if (units === 'imperial') {
+      // change wind_speed from miles/hour to meter/second
+      wind_speed = wind_speed / 2.23693629;
+      wind_speed = Math.round(wind_speed * 100) / 100;
+    }
+
+    if (units === 'imperial') {
+      // change temp from celsius to fahrenheit
+      temp = Math.round((temp * 9) / 5 + 32);
+      temp = `${temp}°F`;
+    } else {
+      temp = `${temp}°C`;
+    }
+
     setWeatherInfo({
       sunrise,
       sunset,
@@ -131,8 +146,16 @@ export default function MainPage() {
         weatherInfo={weatherInfo}
         handleSearchSubmit={handleSearchSubmit}
         handleSearchChange={handleSearchChange}
+        units={units}
+        setUnits={setUnits}
       />
-      <WeatherRight rainData={rainData} rainCategories={rainCategories} timeInfo={timeInfo} weatherInfo={weatherInfo} />
+      <WeatherRight
+        rainData={rainData}
+        rainCategories={rainCategories}
+        timeInfo={timeInfo}
+        weatherInfo={weatherInfo}
+        units={units}
+      />
     </section>
   );
 }

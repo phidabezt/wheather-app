@@ -1,9 +1,11 @@
 {
-    "compilerOptions": {
-        "baseUrl": ".",
-        "paths": {
-            "~/*": ["src/*"],
-            "@animated/*": ["src/assets/animated/*"]
-        }
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "~/*": ["src/*"],
+      "@animated/*": ["src/assets/animated/*"],
+      "@api/*": ["src/api/*"],
+      "@components/*": ["src/components/*"]
     }
+  }
 }

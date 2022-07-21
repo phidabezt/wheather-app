@@ -2,15 +2,16 @@ import React from 'react';
 import classes from './BasicInfo.module.scss';
 import IconCloudMoon from '@animated/overcast-night.svg';
 
-export default function BasicInfo() {
+export default function BasicInfo(props) {
+  const { weatherInfo, units } = props;
   return (
     <div className={classes['basic-info']}>
       <div className={classes['basic-info__content']}>
-        <img src={IconCloudMoon} alt="cloud-moon" className="basic-info__icon" />
-        <h3 className={classes['basic-info__degree']}>20&deg;C</h3>
+        <img src={weatherInfo.iconScr} alt="weather icon" className={classes['basic-info__icon']} />
+        {weatherInfo.temp && <h3 className={classes['basic-info__degree']}>{weatherInfo.temp}</h3>}
       </div>
 
-      <p className={classes['basic-info__description']}>Dramatic Cloudy</p>
+      <p className={classes['basic-info__description']}>{weatherInfo.description}</p>
     </div>
   );
 }

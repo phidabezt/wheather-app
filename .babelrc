@@ -1,13 +1,15 @@
 {
-    "plugins": [
-        [
-            "module-resolver",
-            {
-                "alias": {
-                    "~": "./src",
-                    "@animated": "./src/assets/animated"
-                }
-            }
-        ]
+  "plugins": [
+    [
+      "module-resolver",
+      {
+        "alias": {
+          "~": "./src",
+          "@animated": "./src/assets/animated",
+          "@api": "./src/api",
+          "@components": "./src/components"
+        }
+      }
     ]
+  ]
 }

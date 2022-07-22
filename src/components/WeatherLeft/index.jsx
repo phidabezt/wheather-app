@@ -3,37 +3,22 @@ import classes from './WeatherLeft.module.scss';
 import SearchBar from '../SearchBar';
 import TodayOverview from '../TodayOverview';
 import ChartArea from '../ChartArea';
-import PropTypes from 'prop-types';
 
 function WeatherLeft(props) {
-  const {
-    degreeData,
-    degreeCategories,
-    timeInfo,
-    weatherInfo,
-    handleSearchSubmit,
-    handleSearchChange,
-    units,
-    setUnits,
-  } = props;
+  const { forecastData, handleSearchSubmit, handleSearchChange, units, setUnits } = props;
   return (
     <div className={classes['weather-left']}>
       <SearchBar
-        timeInfo={timeInfo}
+        forecastData={forecastData}
         handleSearchSubmit={handleSearchSubmit}
         handleSearchChange={handleSearchChange}
         units={units}
         setUnits={setUnits}
       />
-      <TodayOverview weatherInfo={weatherInfo} />
-      <ChartArea degreeData={degreeData} degreeCategories={degreeCategories} />
+      <TodayOverview forecastData={forecastData} />
+      <ChartArea hourlyTemp={forecastData.hourlyTemp} />
     </div>
   );
 }
-
-WeatherLeft.propTypes = {
-  degreeData: PropTypes.arrayOf(PropTypes.number).isRequired,
-  degreeCategories: PropTypes.arrayOf(PropTypes.string).isRequired,
-};
 
 export default WeatherLeft;

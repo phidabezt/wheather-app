@@ -3,11 +3,10 @@ import './main.scss';
 import WeatherLeft from '@components/WeatherLeft';
 import WeatherRight from '@components/WeatherRight';
 import weatherApi from '@api/weatherApi';
+import { changeSpeedUnit, changeTempUnit, getLocalDay, getLocalMonth, getLocalTime } from '@utility/formatData';
 
 export default function MainPage() {
-  const [forecastData, setForecastData] = useState();
-  const [timeInfo, setTimeInfo] = useState({});
-  const [weatherInfo, setWeatherInfo] = useState({});
+  const [forecastData, setForecastData] = useState({});
   const [searchText, setSearchText] = useState('Hanoi');
   const [units, setUnits] = useState('metric');
 
@@ -15,13 +14,6 @@ export default function MainPage() {
   useEffect(() => {
     fetchWeatherData(searchText);
   }, [units]);
-
-  useEffect(() => {
-    if (forecastData) {
-      showTimeLocal();
-      showWeatherInfo();
-    }
-  }, [forecastData]);
 
   const fetchWeatherData = async (searchText) => {
     try {
@@ -36,9 +28,70 @@ export default function MainPage() {
         appid: process.env.REACT_APP_API_KEY,
         units,
       });
-      setForecastData(responseForecast);
+
+      // time info
+      const { current, timezone } = responseForecast;
+      let localDay = getLocalDay(current.dt, timezone);
+      let localMonth = getLocalMonth(current.dt, timezone);
+      let localTime = getLocalTime(current.dt, timezone);
+      let localName = timezone.replace('/', ', ');
+
+      // weather info
+      let { sunrise, sunset, temp, pressure, humidity, uvi, wind_speed } = current;
+      let { description, icon } = current.weather[0];
+      const iconScr = weatherApi.getWeatherIconScr(icon);
+      description = description.replace(/\w\S*/g, (w) => w.replace(/^\w/, (c) => c.toUpperCase()));
+      sunrise = getLocalTime(sunrise, timezone);
+      sunset = getLocalTime(sunset, timezone);
+
+      if (units === 'imperial') {
+        wind_speed = changeSpeedUnit(wind_speed);
+        wind_speed = Math.round(wind_speed * 100) / 100;
+        temp = changeTempUnit(temp);
+        temp = `${temp}°F`;
+      } else {
+        temp = `${temp}°C`;
+      }
+
+      // hourly temperature
+      let hourlyTemp = [];
+      for (let hour = 0; hour <= 24; hour += 3) {
+        if (hourlyTemp.length < 9) {
+          let temp = responseForecast.hourly[hour].temp;
+          if (units === 'imperial') {
+            temp = changeTempUnit(temp);
+            temp = `${temp}°F`;
+          } else {
+            temp = `${temp}°C`;
+          }
+          hourlyTemp.push(temp);
+        }
+      }
+
+      //daily rain chance
+      const dailyRainChance = responseForecast.daily.slice(0, 7).map((day) => {
+        return Math.round(day.pop * 100);
+      });
+
+      setForecastData({
+        sunrise,
+        sunset,
+        temp,
+        pressure,
+        humidity,
+        uvi,
+        wind_speed,
+        description,
+        iconScr,
+        localDay,
+        localMonth,
+        localTime,
+        localName,
+        hourlyTemp,
+        dailyRainChance,
+      });
     } catch (err) {
-      if (err.response.status === 404) {
+      if (err?.response?.status === 404) {
         alert('City not found');
       }
       console.log('Failed to fetch weather data', err);
@@ -54,111 +107,16 @@ export default function MainPage() {
     setSearchText(e.target.value);
   };
 
-  const getLocalTime = (dt, timezone) => {
-    const date = new Date(dt * 1000);
-    const time = date.toLocaleString('en-US', {
-      timeZone: timezone,
-      hour: 'numeric',
-      minute: 'numeric',
-      hour12: true,
-    });
-    return time;
-  };
-
-  const getLocalMonth = (dt, timezone) => {
-    const date = new Date(dt * 1000);
-    const month = date.toLocaleString('en-US', {
-      timeZone: timezone,
-      month: 'long',
-      year: 'numeric',
-    });
-    return month;
-  };
-
-  const getLocalDay = (dt, timezone) => {
-    const date = new Date(dt * 1000);
-    const day = date.toLocaleString('en-US', {
-      timeZone: timezone,
-      weekday: 'long',
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric',
-    });
-    return day;
-  };
-
-  const showTimeLocal = () => {
-    const { current, timezone } = forecastData;
-    setTimeInfo({
-      localDay: getLocalDay(current.dt, timezone),
-      localMonth: getLocalMonth(current.dt, timezone),
-      localTime: getLocalTime(current.dt, timezone),
-      locationName: timezone.replace('/', ', '),
-    });
-  };
-
-  const showWeatherInfo = () => {
-    const { current, timezone } = forecastData;
-    let { sunrise, sunset, temp, feels_like, pressure, humidity, uvi, wind_speed } = current;
-    let { description, icon } = current.weather[0];
-    const iconScr = weatherApi.getWeatherIconScr(icon);
-
-    description = description.replace(/\w\S*/g, (w) => w.replace(/^\w/, (c) => c.toUpperCase()));
-    sunrise = getLocalTime(sunrise, timezone);
-    sunset = getLocalTime(sunset, timezone);
-
-    if (units === 'imperial') {
-      // change wind_speed from miles/hour to meter/second
-      wind_speed = wind_speed / 2.23693629;
-      wind_speed = Math.round(wind_speed * 100) / 100;
-    }
-
-    if (units === 'imperial') {
-      // change temp from celsius to fahrenheit
-      temp = Math.round((temp * 9) / 5 + 32);
-      temp = `${temp}°F`;
-    } else {
-      temp = `${temp}°C`;
-    }
-
-    setWeatherInfo({
-      sunrise,
-      sunset,
-      temp,
-      feels_like,
-      pressure,
-      humidity,
-      uvi,
-      wind_speed,
-      description,
-      iconScr,
-    });
-  };
-
-  const degreeData = [30, 40, 45, 50, 49, 45, 40, 31];
-  const degreeCategories = ['00:00', '03:00', '06:00', '09:00', '12:00', '15:00', '18:00', '21:00'];
-  const rainData = [30, 20, 40, 50];
-  const rainCategories = ['7PM', '8PM', '9PM', '10PM'];
-
   return (
     <section className="weather">
       <WeatherLeft
-        degreeData={degreeData}
-        degreeCategories={degreeCategories}
-        timeInfo={timeInfo}
-        weatherInfo={weatherInfo}
+        forecastData={forecastData}
         handleSearchSubmit={handleSearchSubmit}
         handleSearchChange={handleSearchChange}
         units={units}
         setUnits={setUnits}
       />
-      <WeatherRight
-        rainData={rainData}
-        rainCategories={rainCategories}
-        timeInfo={timeInfo}
-        weatherInfo={weatherInfo}
-        units={units}
-      />
+      <WeatherRight forecastData={forecastData} units={units} />
     </section>
   );
 }

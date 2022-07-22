@@ -3,7 +3,7 @@ import './main.scss';
 import WeatherLeft from '@components/WeatherLeft';
 import WeatherRight from '@components/WeatherRight';
 import weatherApi from '@api/weatherApi';
-import { changeSpeedUnit, changeTempUnit, getLocalDay, getLocalMonth, getLocalTime } from '@utility/formatData';
+import { changeSpeedUnit, getLocalDay, getLocalMonth, getLocalTime } from '@utility/formatData';
 
 export default function MainPage() {
   const [forecastData, setForecastData] = useState({});
@@ -47,7 +47,6 @@ export default function MainPage() {
       if (units === 'imperial') {
         wind_speed = changeSpeedUnit(wind_speed);
         wind_speed = Math.round(wind_speed * 100) / 100;
-        temp = changeTempUnit(temp);
         temp = `${temp}°F`;
       } else {
         temp = `${temp}°C`;
@@ -59,7 +58,6 @@ export default function MainPage() {
         if (hourlyTemp.length < 9) {
           let temp = responseForecast.hourly[hour].temp;
           if (units === 'imperial') {
-            temp = changeTempUnit(temp);
             temp = `${temp}°F`;
           } else {
             temp = `${temp}°C`;

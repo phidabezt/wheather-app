@@ -4,7 +4,7 @@ import Chart from 'react-apexcharts';
 import { DEGREE_CATEGORIES } from '@constants/graphData';
 
 export default function ChartArea(props) {
-  const { hourlyTemp } = props;
+  const { hourlyTemp, units } = props;
   const graphStyle = {
     options: {
       chart: {
@@ -71,7 +71,7 @@ export default function ChartArea(props) {
     },
     series: [
       {
-        name: 't °C',
+        name: units === 'metric' ? '°C' : '°F',
         data: hourlyTemp,
       },
     ],

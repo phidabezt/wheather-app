@@ -5,11 +5,6 @@ const changeSpeedUnit = (value) => {
   return value / SPEED_CONVERSION_FACTOR;
 };
 
-// change temp from celsius to fahrenheit
-const changeTempUnit = (value) => {
-  return Math.round((value * 9) / 5 + 32);
-};
-
 const getLocalTime = (dt, timezone) => {
   const date = new Date(dt * 1000);
   const time = date.toLocaleString('en-US', {
@@ -43,4 +38,4 @@ const getLocalDay = (dt, timezone) => {
   return day;
 };
 
-export { changeSpeedUnit, changeTempUnit, getLocalDay, getLocalMonth, getLocalTime };
+export { changeSpeedUnit, getLocalDay, getLocalMonth, getLocalTime };

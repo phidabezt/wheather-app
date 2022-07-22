@@ -16,7 +16,7 @@ function WeatherLeft(props) {
         setUnits={setUnits}
       />
       <TodayOverview forecastData={forecastData} />
-      <ChartArea hourlyTemp={forecastData.hourlyTemp} />
+      <ChartArea hourlyTemp={forecastData.hourlyTemp} units={units} />
     </div>
   );
 }

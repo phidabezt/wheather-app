@@ -7,13 +7,13 @@ import classes from './WeatherRight.module.scss';
 import PropTypes from 'prop-types';
 
 function WeatherRight(props) {
-  const { rainData, rainCategories, timeInfo, weatherInfo, units } = props;
+  const { rainData, rainCategories, forecastData, units } = props;
   return (
     <div className={classes['weather-right']}>
-      <LocationInfo timeInfo={timeInfo} />
-      <BasicInfo weatherInfo={weatherInfo} units={units} />
+      <LocationInfo forecastData={forecastData} />
+      <BasicInfo forecastData={forecastData} units={units} />
       <RainChanse rainData={rainData} rainCategories={rainCategories} />
-      <SunInfo weatherInfo={weatherInfo} />
+      <SunInfo forecastData={forecastData} />
     </div>
   );
 }

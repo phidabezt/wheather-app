@@ -6,7 +6,7 @@ import IconPressure from '@animated/tornado.svg';
 import IconSun from '@animated/uv-index.svg';
 
 export default function TodayOverview(props) {
-  const { weatherInfo } = props;
+  const { forecastData } = props;
   return (
     <div className={classes['overview']}>
       <div className={classes['overview__inner']}>
@@ -15,22 +15,22 @@ export default function TodayOverview(props) {
           <div className={`${classes['overview__grid']}`}>
             <img src={IconWind} alt="windy" className={classes['overview__icon']} />
             <p className={classes['overview__title']}>Wind Speed</p>
-            <p className={classes['overview__value']}>{weatherInfo.wind_speed} m/s</p>
+            <p className={classes['overview__value']}>{forecastData.wind_speed} m/s</p>
           </div>
           <div className={`${classes['overview__grid']}`}>
             <img src={IconCloudRain} alt="cloud-rain" className={classes['overview__icon']} />
             <p className={classes['overview__title']}>Humidity</p>
-            <p className={classes['overview__value']}>{weatherInfo.humidity} %</p>
+            <p className={classes['overview__value']}>{forecastData.humidity} %</p>
           </div>
           <div className={`${classes['overview__grid']}`}>
             <img src={IconPressure} alt="pressure" className={classes['overview__icon']} />
             <p className={classes['overview__title']}>Pressure</p>
-            <p className={classes['overview__value']}>{weatherInfo.pressure} hpa</p>
+            <p className={classes['overview__value']}>{forecastData.pressure} hpa</p>
           </div>
           <div className={`${classes['overview__grid']}`}>
             <img src={IconSun} alt="UV index" className={classes['overview__icon']} />
             <p className={classes['overview__title']}>Uv Index</p>
-            <p className={classes['overview__value']}>{weatherInfo.uvi}</p>
+            <p className={classes['overview__value']}>{forecastData.uvi}</p>
           </div>
         </div>
       </div>

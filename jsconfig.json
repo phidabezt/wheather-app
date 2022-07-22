@@ -5,7 +5,9 @@
       "~/*": ["src/*"],
       "@animated/*": ["src/assets/animated/*"],
       "@api/*": ["src/api/*"],
-      "@components/*": ["src/components/*"]
+      "@components/*": ["src/components/*"],
+      "@constants/*": ["src/constants/*"],
+      "@utility/*": ["src/utility/*"]
     }
   }
 }

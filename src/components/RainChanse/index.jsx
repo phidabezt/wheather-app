@@ -1,9 +1,10 @@
-import React from 'react'
-import classes from './RainChanse.module.scss'
-import Chart from 'react-apexcharts'
+import React from 'react';
+import classes from './RainChanse.module.scss';
+import Chart from 'react-apexcharts';
+import { RAIN_CATEGORIES } from '@constants/graphData';
 
 export default function RainChanse(props) {
-  const { rainData, rainCategories } = props
+  const { dailyRainChance } = props;
   const graphStyle = {
     options: {
       chart: {
@@ -24,19 +25,22 @@ export default function RainChanse(props) {
       plotOptions: {
         bar: {
           borderRadius: 10,
-          horizontal: true,
+          dataLabels: {
+            position: 'top',
+          },
         },
       },
       dataLabels: {
         enabled: true,
         textAnchor: 'middle',
         style: {
-          fontSize: '20px',
-          colors: ['#333', '#999'],
+          fontSize: '16px',
+          colors: ['#f2eded', '#999'],
         },
         background: {
           enabled: false,
         },
+        offsetY: -30,
       },
       stroke: {
         curve: 'smooth',
@@ -50,19 +54,7 @@ export default function RainChanse(props) {
         enabled: false,
       },
       xaxis: {
-        categories: rainCategories,
-        show: false,
-        labels: {
-          show: false,
-        },
-        axisBorder: {
-          show: false,
-        },
-        axisTicks: {
-          show: false,
-        },
-      },
-      yaxis: {
+        categories: RAIN_CATEGORIES,
         labels: {
           style: {
             fontSize: '15px',
@@ -77,23 +69,30 @@ export default function RainChanse(props) {
           show: false,
         },
       },
+      yaxis: {
+        show: false,
+        labels: {
+          show: false,
+        },
+        axisBorder: {
+          show: false,
+        },
+        axisTicks: {
+          show: false,
+        },
+      },
     },
     series: [
       {
         name: '%',
-        data: rainData,
+        data: dailyRainChance,
       },
     ],
-  }
+  };
   return (
     <div className={classes['rain-chanse']}>
-      <h3>Hourly Rain Chanse (%)</h3>
-      <Chart
-        options={graphStyle.options}
-        series={graphStyle.series}
-        type="bar"
-        height="250"
-      />
+      <h3>Daily Rain Chance (%)</h3>
+      <Chart options={graphStyle.options} series={graphStyle.series} type="bar" height="250" />
     </div>
-  )
+  );
 }

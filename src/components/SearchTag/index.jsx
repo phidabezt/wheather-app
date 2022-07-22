@@ -21,10 +21,10 @@ export default function SearchTag(props) {
           handleSearchChange(e);
         }}
       />
-      <button type="submit" className={classes['search-tag__button']}>
+      <button type="submit" className={classes['search-tag__button']} button-title="Search">
         <FontAwesomeIcon icon={faSearch} className={classes['search-tag__icon']} />
       </button>
-      <button className={classes['search-tag__location']}>
+      <button className={classes['search-tag__location']} button-title="Your location">
         <FontAwesomeIcon icon={faMapLocationDot} className={classes['search-tag__icon']} />
       </button>
     </form>

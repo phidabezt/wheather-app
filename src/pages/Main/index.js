@@ -53,6 +53,26 @@ export default function MainPage() {
         temp = `${temp}°C`;
       }
 
+      // hourly temperature
+      let hourlyTemp = [];
+      for (let hour = 0; hour <= 24; hour += 3) {
+        if (hourlyTemp.length < 9) {
+          let temp = responseForecast.hourly[hour].temp;
+          if (units === 'imperial') {
+            temp = changeTempUnit(temp);
+            temp = `${temp}°F`;
+          } else {
+            temp = `${temp}°C`;
+          }
+          hourlyTemp.push(temp);
+        }
+      }
+
+      //daily rain chance
+      const dailyRainChance = responseForecast.daily.slice(0, 7).map((day) => {
+        return Math.round(day.pop * 100);
+      });
+
       setForecastData({
         sunrise,
         sunset,
@@ -67,6 +87,8 @@ export default function MainPage() {
         localMonth,
         localTime,
         localName,
+        hourlyTemp,
+        dailyRainChance,
       });
     } catch (err) {
       if (err?.response?.status === 404) {
@@ -85,23 +107,16 @@ export default function MainPage() {
     setSearchText(e.target.value);
   };
 
-  const degreeData = [30, 40, 45, 50, 49, 45, 40, 31];
-  const degreeCategories = ['00:00', '03:00', '06:00', '09:00', '12:00', '15:00', '18:00', '21:00'];
-  const rainData = [30, 20, 40, 50];
-  const rainCategories = ['7PM', '8PM', '9PM', '10PM'];
-
   return (
     <section className="weather">
       <WeatherLeft
-        degreeData={degreeData}
-        degreeCategories={degreeCategories}
         forecastData={forecastData}
         handleSearchSubmit={handleSearchSubmit}
         handleSearchChange={handleSearchChange}
         units={units}
         setUnits={setUnits}
       />
-      <WeatherRight rainData={rainData} rainCategories={rainCategories} forecastData={forecastData} units={units} />
+      <WeatherRight forecastData={forecastData} units={units} />
     </section>
   );
 }

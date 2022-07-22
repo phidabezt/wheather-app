@@ -1,9 +1,10 @@
-import React from 'react'
-import classes from './ChartArea.module.scss'
-import Chart from 'react-apexcharts'
+import React from 'react';
+import classes from './ChartArea.module.scss';
+import Chart from 'react-apexcharts';
+import { DEGREE_CATEGORIES } from '@constants/graphData';
 
 export default function ChartArea(props) {
-  const { degreeData, degreeCategories } = props
+  const { hourlyTemp } = props;
   const graphStyle = {
     options: {
       chart: {
@@ -47,7 +48,7 @@ export default function ChartArea(props) {
         show: true,
       },
       xaxis: {
-        categories: degreeCategories,
+        categories: DEGREE_CATEGORIES,
         labels: {
           style: {
             fontSize: '15px',
@@ -71,19 +72,14 @@ export default function ChartArea(props) {
     series: [
       {
         name: 't °C',
-        data: degreeData,
+        data: hourlyTemp,
       },
     ],
-  }
+  };
   return (
     <div className={classes['chart']}>
       <h3 className={classes['chart__title']}>Hourly Temperature</h3>
-      <Chart
-        options={graphStyle.options}
-        series={graphStyle.series}
-        type="area"
-        height="300"
-      />
+      <Chart options={graphStyle.options} series={graphStyle.series} type="area" height="300" />
     </div>
-  )
+  );
 }

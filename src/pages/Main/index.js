@@ -3,12 +3,14 @@ import './main.scss';
 import WeatherLeft from '@components/WeatherLeft';
 import WeatherRight from '@components/WeatherRight';
 import weatherApi from '@api/weatherApi';
+import { debounce } from 'lodash';
 import { changeSpeedUnit, getLocalDay, getLocalMonth, getLocalTime } from '@utility/formatData';
 
 export default function MainPage() {
   const [forecastData, setForecastData] = useState({});
   const [searchText, setSearchText] = useState('Hanoi');
   const [units, setUnits] = useState('metric');
+  const [loading, setLoading] = useState(true);
 
   // for default display when first load
   useEffect(() => {
@@ -17,6 +19,7 @@ export default function MainPage() {
 
   const fetchWeatherData = async (searchText) => {
     try {
+      setLoading(true);
       const responseLocation = await weatherApi.getWeatherData('weather', {
         q: searchText,
         appid: process.env.REACT_APP_API_KEY,
@@ -88,6 +91,8 @@ export default function MainPage() {
         hourlyTemp,
         dailyRainChance,
       });
+      // setLoading(false);
+      debounceLoading();
     } catch (err) {
       if (err?.response?.status === 404) {
         alert('City not found');
@@ -95,6 +100,10 @@ export default function MainPage() {
       console.log('Failed to fetch weather data', err);
     }
   };
+
+  const debounceLoading = debounce(() => {
+    setLoading(false);
+  }, 2000);
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
@@ -113,8 +122,9 @@ export default function MainPage() {
         handleSearchChange={handleSearchChange}
         units={units}
         setUnits={setUnits}
+        loading={loading}
       />
-      <WeatherRight forecastData={forecastData} units={units} />
+      <WeatherRight forecastData={forecastData} units={units} loading={loading} />
     </section>
   );
 }

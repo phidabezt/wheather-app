@@ -1,16 +1,23 @@
 import React from 'react';
 import classes from './SearchBar.module.scss';
 import SearchTag from '../SearchTag';
+import Skeleton from '../Skeleton';
 
 export default function SearchBar(props) {
-  const { forecastData, handleSearchSubmit, handleSearchChange, units, setUnits } = props;
+  const { forecastData, handleSearchSubmit, handleSearchChange, units, setUnits, loading } = props;
   const placeholder = 'Search for city ...';
 
   return (
     <div className={classes['search']}>
       <div className={classes['search__date']}>
-        <h2 className={classes['search__month']}>{forecastData.localMonth}</h2>
-        <h3 className={classes['search__day']}>{forecastData.localDay}</h3>
+        {loading ? (
+          <Skeleton width={130} height={50} />
+        ) : (
+          <>
+            <h2 className={classes['search__month']}>{forecastData.localMonth}</h2>
+            <h3 className={classes['search__day']}>{forecastData.localDay}</h3>
+          </>
+        )}
       </div>
 
       <div className={classes['search__interaction']}>

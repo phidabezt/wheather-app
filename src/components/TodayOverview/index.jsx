@@ -4,34 +4,34 @@ import IconWind from '@animated/dust-wind.svg';
 import IconCloudRain from '@animated/raindrops.svg';
 import IconPressure from '@animated/tornado.svg';
 import IconSun from '@animated/uv-index.svg';
+import Skeleton from '../Skeleton';
 
 export default function TodayOverview(props) {
-  const { forecastData } = props;
+  const { forecastData, loading } = props;
+
+  const weatherInfoList = [
+    { id: 1, name: 'Wind Speed', iconSrc: IconWind, value: `${forecastData.wind_speed} m/s` },
+    { id: 2, name: 'Humidity', iconSrc: IconCloudRain, value: `${forecastData.humidity} %` },
+    { id: 3, name: 'Pressure', iconSrc: IconPressure, value: `${forecastData.pressure} hPa` },
+    { id: 4, name: 'UV Index', iconSrc: IconSun, value: `${forecastData.uvi}` },
+  ];
+
   return (
     <div className={classes['overview']}>
       <div className={classes['overview__inner']}>
         <h3 className={classes['overview__header']}>Today overview</h3>
         <div className={classes['overview__grids']}>
-          <div className={`${classes['overview__grid']}`}>
-            <img src={IconWind} alt="windy" className={classes['overview__icon']} />
-            <p className={classes['overview__title']}>Wind Speed</p>
-            <p className={classes['overview__value']}>{forecastData.wind_speed} m/s</p>
-          </div>
-          <div className={`${classes['overview__grid']}`}>
-            <img src={IconCloudRain} alt="cloud-rain" className={classes['overview__icon']} />
-            <p className={classes['overview__title']}>Humidity</p>
-            <p className={classes['overview__value']}>{forecastData.humidity} %</p>
-          </div>
-          <div className={`${classes['overview__grid']}`}>
-            <img src={IconPressure} alt="pressure" className={classes['overview__icon']} />
-            <p className={classes['overview__title']}>Pressure</p>
-            <p className={classes['overview__value']}>{forecastData.pressure} hpa</p>
-          </div>
-          <div className={`${classes['overview__grid']}`}>
-            <img src={IconSun} alt="UV index" className={classes['overview__icon']} />
-            <p className={classes['overview__title']}>Uv Index</p>
-            <p className={classes['overview__value']}>{forecastData.uvi}</p>
-          </div>
+          {weatherInfoList.map((info) =>
+            loading ? (
+              <Skeleton width={380} height={114} key={info.id} />
+            ) : (
+              <div className={`${classes['overview__grid']}`} key={info.id}>
+                <img src={info.iconSrc} alt={info.name} className={classes['overview__icon']} />
+                <p className={classes['overview__title']}>{info.name}</p>
+                <p className={classes['overview__value']}>{info.value}</p>
+              </div>
+            ),
+          )}
         </div>
       </div>
     </div>

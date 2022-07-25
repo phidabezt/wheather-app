@@ -1,10 +1,9 @@
 .sun-info {
   display: block;
   color: var(--color-blue-2);
-  margin-top: 0.5rem;
 
   &__grids {
-    margin-top: var(--margin-3);
+    margin-top: 10px;
     display: flex;
     justify-content: space-between;
   }

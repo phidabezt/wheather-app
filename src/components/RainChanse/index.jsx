@@ -2,9 +2,10 @@ import React from 'react';
 import classes from './RainChanse.module.scss';
 import Chart from 'react-apexcharts';
 import { RAIN_CATEGORIES } from '@constants/graphData';
+import Skeleton from '../Skeleton';
 
 export default function RainChanse(props) {
-  const { dailyRainChance } = props;
+  const { dailyRainChance, loading } = props;
   const graphStyle = {
     options: {
       chart: {
@@ -91,8 +92,12 @@ export default function RainChanse(props) {
   };
   return (
     <div className={classes['rain-chanse']}>
-      <h3>Daily Rain Chance (%)</h3>
-      <Chart options={graphStyle.options} series={graphStyle.series} type="bar" height="250" />
+      <h3 className={classes['rain-chanse__title']}>Daily Rain Chance (%)</h3>
+      {loading ? (
+        <Skeleton width="100%" height={250} bgColor="var(--color-blue-6)" />
+      ) : (
+        <Chart options={graphStyle.options} series={graphStyle.series} type="bar" height="250" />
+      )}
     </div>
   );
 }

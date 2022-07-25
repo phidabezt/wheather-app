@@ -1,3 +1,7 @@
 .chart {
   overflow: hidden;
+  &__title {
+    margin-bottom: var(--margin-1);
+    color: var(--color-blue-2);
+  }
 }

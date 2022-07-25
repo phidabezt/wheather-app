@@ -6,13 +6,13 @@ import SunInfo from '../SunInfo';
 import classes from './WeatherRight.module.scss';
 
 function WeatherRight(props) {
-  const { rainData, forecastData, units } = props;
+  const { rainData, forecastData, units, loading } = props;
   return (
     <div className={classes['weather-right']}>
-      <LocationInfo forecastData={forecastData} />
-      <BasicInfo forecastData={forecastData} units={units} />
-      <RainChanse dailyRainChance={forecastData.dailyRainChance} />
-      <SunInfo forecastData={forecastData} />
+      <LocationInfo forecastData={forecastData} loading={loading} />
+      <BasicInfo forecastData={forecastData} units={units} loading={loading} />
+      <RainChanse dailyRainChance={forecastData.dailyRainChance} loading={loading} />
+      <SunInfo forecastData={forecastData} loading={loading} />
     </div>
   );
 }

@@ -2,9 +2,10 @@ import React from 'react';
 import classes from './ChartArea.module.scss';
 import Chart from 'react-apexcharts';
 import { DEGREE_CATEGORIES } from '@constants/graphData';
+import Skeleton from '../Skeleton';
 
 export default function ChartArea(props) {
-  const { hourlyTemp, units } = props;
+  const { hourlyTemp, units, loading } = props;
   const graphStyle = {
     options: {
       chart: {
@@ -79,7 +80,11 @@ export default function ChartArea(props) {
   return (
     <div className={classes['chart']}>
       <h3 className={classes['chart__title']}>Hourly Temperature</h3>
-      <Chart options={graphStyle.options} series={graphStyle.series} type="area" height="300" />
+      {loading ? (
+        <Skeleton width={'100%'} height={300} />
+      ) : (
+        <Chart options={graphStyle.options} series={graphStyle.series} type="area" height="300" />
+      )}
     </div>
   );
 }

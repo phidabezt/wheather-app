@@ -5,7 +5,7 @@ import TodayOverview from '../TodayOverview';
 import ChartArea from '../ChartArea';
 
 function WeatherLeft(props) {
-  const { forecastData, handleSearchSubmit, handleSearchChange, units, setUnits } = props;
+  const { forecastData, handleSearchSubmit, handleSearchChange, units, setUnits, loading } = props;
   return (
     <div className={classes['weather-left']}>
       <SearchBar
@@ -14,9 +14,10 @@ function WeatherLeft(props) {
         handleSearchChange={handleSearchChange}
         units={units}
         setUnits={setUnits}
+        loading={loading}
       />
-      <TodayOverview forecastData={forecastData} />
-      <ChartArea hourlyTemp={forecastData.hourlyTemp} units={units} />
+      <TodayOverview forecastData={forecastData} loading={loading} />
+      <ChartArea hourlyTemp={forecastData.hourlyTemp} units={units} loading={loading} />
     </div>
   );
 }

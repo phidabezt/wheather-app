@@ -1,0 +1,26 @@
+.skeleton {
+  padding: var(--padding-1);
+  border-radius: 20px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 5px;
+}
+
+.skeleton:after {
+  content: '';
+  position: absolute;
+
+  height: 100%;
+  width: 100px;
+  left: -100px;
+  top: 0;
+
+  background: linear-gradient(to right, transparent, #ffffff70, transparent);
+  animation: reflect 800ms ease-out infinite;
+}
+
+@keyframes reflect {
+  to {
+    left: calc(100% + 100px);
+  }
+}

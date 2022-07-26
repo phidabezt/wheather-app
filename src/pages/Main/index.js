@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './main.scss';
 import WeatherLeft from '@components/WeatherLeft';
 import WeatherRight from '@components/WeatherRight';
+import PopUp from '@components/PopUp';
 import weatherApi from '@api/weatherApi';
 import { debounce } from 'lodash';
 import { changeSpeedUnit, getLocalDay, getLocalMonth, getLocalTime } from '@utility/formatData';
@@ -11,6 +12,7 @@ export default function MainPage() {
   const [searchText, setSearchText] = useState('Hanoi');
   const [units, setUnits] = useState('metric');
   const [loading, setLoading] = useState(true);
+  const [popUpError, setPopUpError] = useState(false);
 
   // for default display when first load
   useEffect(() => {
@@ -91,13 +93,14 @@ export default function MainPage() {
         hourlyTemp,
         dailyRainChance,
       });
-      // setLoading(false);
       debounceLoading();
     } catch (err) {
       if (err?.response?.status === 404) {
-        alert('City not found');
+        setPopUpError(true);
+        setLoading(false);
+      } else {
+        console.log('Failed to fetch weather data', err);
       }
-      console.log('Failed to fetch weather data', err);
     }
   };
 
@@ -107,15 +110,26 @@ export default function MainPage() {
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
+    if (popUpError) {
+      return;
+    }
     fetchWeatherData(searchText);
   };
 
   const handleSearchChange = (e) => {
+    e.preventDefault();
     setSearchText(e.target.value);
+  };
+
+  const handleLocationClick = () => {
+    fetchWeatherData('Hanoi');
   };
 
   return (
     <section className="weather">
+      <PopUp trigger={popUpError} setTrigger={setPopUpError}>
+        <h3>May be your city input is invalid</h3>
+      </PopUp>
       <WeatherLeft
         forecastData={forecastData}
         handleSearchSubmit={handleSearchSubmit}
@@ -123,6 +137,7 @@ export default function MainPage() {
         units={units}
         setUnits={setUnits}
         loading={loading}
+        handleLocationClick={handleLocationClick}
       />
       <WeatherRight forecastData={forecastData} units={units} loading={loading} />
     </section>

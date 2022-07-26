@@ -13,6 +13,7 @@ export default function MainPage() {
   const [units, setUnits] = useState('metric');
   const [loading, setLoading] = useState(true);
   const [popUpError, setPopUpError] = useState(false);
+  const searchRef = useRef(null);
 
   // for default display when first load
   useEffect(() => {
@@ -138,6 +139,7 @@ export default function MainPage() {
         setUnits={setUnits}
         loading={loading}
         handleLocationClick={handleLocationClick}
+        searchRef={searchRef}
       />
       <WeatherRight forecastData={forecastData} units={units} loading={loading} />
     </section>

@@ -12,7 +12,6 @@ export default function PopUp(props) {
         <FontAwesomeIcon icon={faBan} className={classes['popup__icon']} />
         {props.children}
         <button
-          type="submit"
           className={classes['popup__close']}
           tabIndex={0}
           onClick={() => {

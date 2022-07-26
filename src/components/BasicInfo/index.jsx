@@ -7,18 +7,18 @@ export default function BasicInfo(props) {
   return (
     <div className={classes['basic-info']}>
       {loading ? (
-        <Skeleton width={200} height={130} bgColor="var(--color-blue-6)" />
+        <>
+          <Skeleton width={200} height={130} bgColor="var(--color-blue-6)" />
+          <Skeleton width={200} height={130} bgColor="var(--color-blue-6)" />
+        </>
       ) : (
-        <h3 className={classes['basic-info__degree']}>{forecastData.temp}</h3>
-      )}
-
-      {loading ? (
-        <Skeleton width={200} height={130} bgColor="var(--color-blue-6)" />
-      ) : (
-        <div className={classes['basic-info__content']}>
-          <img src={forecastData.iconScr} alt="weather icon" className={classes['basic-info__icon']} />
-          <p className={classes['basic-info__description']}>{forecastData.description} </p>
-        </div>
+        <>
+          <h3 className={classes['basic-info__degree']}>{forecastData.temp}</h3>
+          <div className={classes['basic-info__content']}>
+            <img src={forecastData.iconScr} alt="weather icon" className={classes['basic-info__icon']} />
+            <p className={classes['basic-info__description']}>{forecastData.description} </p>
+          </div>
+        </>
       )}
     </div>
   );

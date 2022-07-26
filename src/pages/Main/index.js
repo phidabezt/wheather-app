@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './main.scss';
 import WeatherLeft from '@components/WeatherLeft';
 import WeatherRight from '@components/WeatherRight';
@@ -98,8 +98,9 @@ export default function MainPage() {
       if (err?.response?.status === 404) {
         setPopUpError(true);
         setLoading(false);
+      } else {
+        console.log('Failed to fetch weather data', err);
       }
-      console.log('Failed to fetch weather data', err);
     }
   };
 
@@ -109,10 +110,14 @@ export default function MainPage() {
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
+    if (popUpError) {
+      return;
+    }
     fetchWeatherData(searchText);
   };
 
   const handleSearchChange = (e) => {
+    e.preventDefault();
     setSearchText(e.target.value);
   };
 
@@ -122,6 +127,9 @@ export default function MainPage() {
 
   return (
     <section className="weather">
+      <PopUp trigger={popUpError} setTrigger={setPopUpError}>
+        <h3>May be your city input is invalid</h3>
+      </PopUp>
       <WeatherLeft
         forecastData={forecastData}
         handleSearchSubmit={handleSearchSubmit}
@@ -132,9 +140,6 @@ export default function MainPage() {
         handleLocationClick={handleLocationClick}
       />
       <WeatherRight forecastData={forecastData} units={units} loading={loading} />
-      <PopUp trigger={popUpError} setTrigger={setPopUpError}>
-        <h3>May be your city input is invalid</h3>
-      </PopUp>
     </section>
   );
 }

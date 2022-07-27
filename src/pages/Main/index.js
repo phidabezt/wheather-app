@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import './main.scss';
 import WeatherLeft from '@components/WeatherLeft';
 import WeatherRight from '@components/WeatherRight';
@@ -113,7 +113,7 @@ export default function MainPage() {
 
   const debounceLoading = debounce(() => {
     setLoading(false);
-  }, 2000);
+  }, 1000);
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
@@ -130,7 +130,8 @@ export default function MainPage() {
 
   const handleLocationClick = () => {
     if (searchText === 'Hanoi') return;
-    fetchWeatherData('Hanoi');
+    setSearchText('Hanoi');
+    fetchWeatherData();
   };
 
   const weatherInfoList = [
@@ -151,13 +152,14 @@ export default function MainPage() {
 
       <WeatherLeft
         forecastData={forecastData}
-        handleSearchSubmit={handleSearchSubmit}
-        handleSearchChange={handleSearchChange}
         units={units}
         setUnits={setUnits}
         loading={loading}
-        handleLocationClick={handleLocationClick}
         weatherInfoList={weatherInfoList}
+        searchText={searchText}
+        onSearchSubmit={handleSearchSubmit}
+        onSearchChange={handleSearchChange}
+        onLocationClick={handleLocationClick}
       />
       <WeatherRight forecastData={forecastData} units={units} loading={loading} sunInfoList={sunInfoList} />
     </section>

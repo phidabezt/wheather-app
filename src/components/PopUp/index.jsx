@@ -5,13 +5,14 @@ import { faBan } from '@fortawesome/free-solid-svg-icons';
 
 export default function PopUp(props) {
   const { setTrigger } = props;
-
-  return props.trigger ? (
+  return (
     <div className={classes['popup']}>
       <div className={classes['popup-inner']}>
         <FontAwesomeIcon icon={faBan} className={classes['popup__icon']} />
-        {props.children}
+        <h3>May be your city input is invalid</h3>
         <button
+          type="button"
+          autoFocus
           className={classes['popup__close']}
           tabIndex={0}
           onClick={() => {
@@ -22,7 +23,5 @@ export default function PopUp(props) {
         </button>
       </div>
     </div>
-  ) : (
-    ''
   );
 }

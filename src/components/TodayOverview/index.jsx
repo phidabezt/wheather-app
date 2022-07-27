@@ -1,20 +1,9 @@
 import React from 'react';
 import classes from './TodayOverview.module.scss';
-import IconWind from '@animated/dust-wind.svg';
-import IconCloudRain from '@animated/raindrops.svg';
-import IconPressure from '@animated/tornado.svg';
-import IconSun from '@animated/uv-index.svg';
 import Skeleton from '../Skeleton';
 
 export default function TodayOverview(props) {
-  const { forecastData, loading } = props;
-
-  const weatherInfoList = [
-    { id: 1, name: 'Wind Speed', iconSrc: IconWind, value: `${forecastData.wind_speed} m/s` },
-    { id: 2, name: 'Humidity', iconSrc: IconCloudRain, value: `${forecastData.humidity} %` },
-    { id: 3, name: 'Pressure', iconSrc: IconPressure, value: `${forecastData.pressure} hPa` },
-    { id: 4, name: 'UV Index', iconSrc: IconSun, value: `${forecastData.uvi}` },
-  ];
+  const { loading, weatherInfoList } = props;
 
   return (
     <div className={classes['overview']}>

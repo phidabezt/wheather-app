@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './main.scss';
 import WeatherLeft from '@components/WeatherLeft';
 import WeatherRight from '@components/WeatherRight';
@@ -20,11 +20,12 @@ export default function MainPage() {
   const [units, setUnits] = useState('metric');
   const [loading, setLoading] = useState(true);
   const [popUpError, setPopUpError] = useState(false);
+  const searchRef = useRef(null);
 
   // for default display when first load
   useEffect(() => {
     fetchWeatherData(searchText);
-  }, [units]);
+  }, [units, searchRef.current]);
 
   const fetchWeatherData = async (searchText) => {
     try {
@@ -128,12 +129,13 @@ export default function MainPage() {
     setSearchText(e.target.value);
   };
 
-  const handleLocationClick = () => {
+  const handleLocationClick = (e) => {
     if (searchText === 'Hanoi') return;
-    setSearchText('Hanoi');
-    fetchWeatherData();
+    searchRef.current.value = 'Hanoi';
+    setSearchText(searchRef.current.value);
+    // fetchWeatherData(searchText);
   };
-
+  console.log(searchText);
   const weatherInfoList = [
     { id: 1, name: 'Wind Speed', iconSrc: IconWind, value: `${forecastData.wind_speed} m/s` },
     { id: 2, name: 'Humidity', iconSrc: IconCloudRain, value: `${forecastData.humidity} %` },
@@ -156,10 +158,10 @@ export default function MainPage() {
         setUnits={setUnits}
         loading={loading}
         weatherInfoList={weatherInfoList}
-        searchText={searchText}
         onSearchSubmit={handleSearchSubmit}
         onSearchChange={handleSearchChange}
         onLocationClick={handleLocationClick}
+        searchRef={searchRef}
       />
       <WeatherRight forecastData={forecastData} units={units} loading={loading} sunInfoList={sunInfoList} />
     </section>

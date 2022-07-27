@@ -4,7 +4,7 @@ import SearchTag from '../SearchTag';
 import Skeleton from '../Skeleton';
 
 export default function SearchBar(props) {
-  const { forecastData, onSearchSubmit, onSearchChange, units, setUnits, loading, onLocationClick, searchText } = props;
+  const { forecastData, onSearchSubmit, onSearchChange, units, setUnits, loading, onLocationClick, searchRef } = props;
   const placeholder = 'Search for city ...';
 
   return (
@@ -26,7 +26,7 @@ export default function SearchBar(props) {
           onSearchSubmit={onSearchSubmit}
           onSearchChange={onSearchChange}
           onLocationClick={onLocationClick}
-          searchText={searchText}
+          searchRef={searchRef}
         />
       </div>
 

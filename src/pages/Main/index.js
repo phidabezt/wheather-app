@@ -7,13 +7,19 @@ import weatherApi from '@api/weatherApi';
 import { debounce } from 'lodash';
 import { changeSpeedUnit, getLocalDay, getLocalMonth, getLocalTime } from '@utility/formatData';
 
+import IconWind from '@animated/dust-wind.svg';
+import IconCloudRain from '@animated/raindrops.svg';
+import IconPressure from '@animated/tornado.svg';
+import IconSun from '@animated/uv-index.svg';
+import IconSunRise from '@animated/clear-day.svg';
+import IconSunSet from '@animated/haze-day.svg';
+
 export default function MainPage() {
   const [forecastData, setForecastData] = useState({});
   const [searchText, setSearchText] = useState('Hanoi');
   const [units, setUnits] = useState('metric');
   const [loading, setLoading] = useState(true);
   const [popUpError, setPopUpError] = useState(false);
-  const searchRef = useRef(null);
 
   // for default display when first load
   useEffect(() => {
@@ -123,14 +129,26 @@ export default function MainPage() {
   };
 
   const handleLocationClick = () => {
+    if (searchText === 'Hanoi') return;
     fetchWeatherData('Hanoi');
   };
 
+  const weatherInfoList = [
+    { id: 1, name: 'Wind Speed', iconSrc: IconWind, value: `${forecastData.wind_speed} m/s` },
+    { id: 2, name: 'Humidity', iconSrc: IconCloudRain, value: `${forecastData.humidity} %` },
+    { id: 3, name: 'Pressure', iconSrc: IconPressure, value: `${forecastData.pressure} hPa` },
+    { id: 4, name: 'UV Index', iconSrc: IconSun, value: `${forecastData.uvi}` },
+  ];
+
+  const sunInfoList = [
+    { id: 1, name: 'rise', iconSrc: IconSunRise, value: forecastData.sunrise },
+    { id: 2, name: 'set', iconSrc: IconSunSet, value: forecastData.sunset },
+  ];
+
   return (
     <section className="weather">
-      <PopUp trigger={popUpError} setTrigger={setPopUpError}>
-        <h3>May be your city input is invalid</h3>
-      </PopUp>
+      {popUpError ? <PopUp setTrigger={setPopUpError} /> : null}
+
       <WeatherLeft
         forecastData={forecastData}
         handleSearchSubmit={handleSearchSubmit}
@@ -139,9 +157,9 @@ export default function MainPage() {
         setUnits={setUnits}
         loading={loading}
         handleLocationClick={handleLocationClick}
-        searchRef={searchRef}
+        weatherInfoList={weatherInfoList}
       />
-      <WeatherRight forecastData={forecastData} units={units} loading={loading} />
+      <WeatherRight forecastData={forecastData} units={units} loading={loading} sunInfoList={sunInfoList} />
     </section>
   );
 }

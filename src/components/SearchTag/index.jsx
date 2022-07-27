@@ -4,22 +4,23 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faMapLocationDot } from '@fortawesome/free-solid-svg-icons';
 
 export default function SearchTag(props) {
-  const { placeholder, handleSearchSubmit, handleSearchChange, handleLocationClick } = props;
+  const { placeholder, onSearchSubmit, onSearchChange, onLocationClick, searchText } = props;
 
   return (
     <>
       <form
         className={classes['search-tag']}
         onSubmit={(e) => {
-          handleSearchSubmit(e);
+          onSearchSubmit(e);
         }}
       >
         <input
           className={classes['search-tag__input']}
           name="city_search"
           placeholder={placeholder}
+          value={searchText}
           onChange={(e) => {
-            handleSearchChange(e);
+            onSearchChange(e);
           }}
         />
         <button type="submit" className={classes['search-tag__button']} button-title="Search">
@@ -30,7 +31,7 @@ export default function SearchTag(props) {
         className={classes['search-tag__location']}
         button-title="Your location"
         onClick={() => {
-          handleLocationClick();
+          onLocationClick();
         }}
       >
         <FontAwesomeIcon icon={faMapLocationDot} className={classes['search-tag__icon']} />

@@ -32,6 +32,13 @@
   --shadow-svg: drop-shadow(0 0 5px rgba(236, 236, 236, 0.615));
   --shadow-text: 0px 0px 2px rgba(236, 236, 236, 0.615);
   --shadow-img: 0px 0px 2px rgba(236, 236, 236, 0.615);
+
+  // RESPONSIVE BREAKPOINTS
+  --XS: 480px;
+  --SM: 768px;
+  --MD: 1024px;
+  --XL: 1170px;
+  --XXL: 1400px;
 }
 
 .weather {

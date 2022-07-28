@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faMapLocationDot } from '@fortawesome/free-solid-svg-icons';
 
 export default function SearchTag(props) {
-  const { placeholder, onSearchSubmit, onSearchChange, onLocationClick, searchRef } = props;
+  const { placeholder, onSearchSubmit, onSearchChange, onLocationClick, value } = props;
 
   return (
     <>
@@ -15,7 +15,8 @@ export default function SearchTag(props) {
         }}
       >
         <input
-          ref={searchRef}
+          value={value}
+          autoFocus
           className={classes['search-tag__input']}
           name="city_search"
           placeholder={placeholder}

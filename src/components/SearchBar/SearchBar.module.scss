@@ -6,7 +6,6 @@
   &__date {
     font-weight: 700;
     color: var(--color-blue-2);
-    width: 35%;
   }
 
   &__day {
@@ -16,22 +15,19 @@
   }
 
   &__interaction {
-    width: 53%;
+    margin: auto;
     height: 55px;
     display: flex;
     align-items: center;
-    margin-left: 2rem;
   }
 
   &__degree {
-    width: 25%;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 1.5rem;
     font-weight: bold;
     color: var(--color-quaternary);
-    position: relative;
   }
 
   &__icon {

@@ -1,6 +1,12 @@
+@import '../../responsive.scss';
+
 .weather-left {
   width: 55%;
   background-color: var(--color-secondary);
   border-radius: 20px 0 0 0px;
   padding: var(--padding-3);
+
+  @include mdScreen {
+    width: 50%;
+  }
 }

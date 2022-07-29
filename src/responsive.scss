@@ -1,28 +1,35 @@
 $XS: 480px;
-$SM: 768px;
+$SM: 600px;
 $MD: 1024px;
-$XL: 1400px;
+$XL: 1085px;
+$XXL: 1350px;
 
 @mixin xsScreen {
-  @media (max-width: #{$XS - 1px}) {
+  @media (max-width: #{$XS}) {
     @content;
   }
 }
 
 @mixin smScreen {
-  @media (min-width: #{$XS}) and (max-width: #{$MD - 1px}) {
+  @media (max-width: #{$SM}) {
     @content;
   }
 }
 
 @mixin mdScreen {
-  @media (min-width: #{$MD}) and (max-width: #{$XL - 1px}) {
+  @media (max-width: #{$MD}) {
     @content;
   }
 }
 
 @mixin xlScreen {
-  @media (min-width: #{$XL}) {
+  @media (max-width: #{$XL}) {
+    @content;
+  }
+}
+
+@mixin xxlScreen {
+  @media (max-width: #{$XXL}) {
     @content;
   }
 }

@@ -11,7 +11,12 @@
     rgba(29, 29, 185, 1) 100%,
     rgba(29, 29, 185, 0.6617997540813201) 100%
   );
-  @include mdScreen {
+
+  @include xlScreen {
     width: 50%;
+  }
+
+  @include mdScreen {
+    width: 100%;
   }
 }

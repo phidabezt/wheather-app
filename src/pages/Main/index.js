@@ -15,30 +15,22 @@ import IconSunRise from '@animated/clear-day.svg';
 import IconSunSet from '@animated/haze-day.svg';
 
 export default function MainPage() {
-  // const [forecastData, setForecastData] = useState({});
-  const [loading, setLoading] = useState(true);
-  const [popUpError, setPopUpError] = useState(false);
   const [searchText, setSearchText] = useState('');
   const [units, setUnits] = useState('metric');
-
-  const { forecastData, handleSearchSubmit } = useForecast(
-    searchText,
-    units,
-    loading,
-    setLoading,
-    popUpError,
-    setPopUpError,
-  );
+  const { forecastData, fetchData, loading, popUpError, closePopUp } = useForecast(searchText, units);
 
   const handleSearchChange = (e) => {
     e.preventDefault();
     setSearchText(e.target.value);
   };
 
-  const handleLocationClick = (e) => {
+  const handleLocationClick = () => {
     if (searchText === 'Hanoi') return;
     setSearchText('Hanoi');
   };
+
+  const handleClose = () => closePopUp(false);
+
   const weatherInfoList = [
     { id: 1, name: 'Wind Speed', iconSrc: IconWind, value: `${forecastData.wind_speed} m/s` },
     { id: 2, name: 'Humidity', iconSrc: IconCloudRain, value: `${forecastData.humidity} %` },
@@ -53,7 +45,7 @@ export default function MainPage() {
 
   return (
     <section className="weather">
-      {popUpError ? <PopUp setTrigger={setPopUpError} /> : null}
+      {popUpError ? <PopUp onClose={handleClose} /> : null}
 
       <WeatherLeft
         forecastData={forecastData}
@@ -61,7 +53,7 @@ export default function MainPage() {
         setUnits={setUnits}
         loading={loading}
         weatherInfoList={weatherInfoList}
-        onSearchSubmit={handleSearchSubmit}
+        onSearchSubmit={fetchData}
         onSearchChange={handleSearchChange}
         onLocationClick={handleLocationClick}
         value={searchText}

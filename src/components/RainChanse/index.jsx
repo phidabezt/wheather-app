@@ -94,9 +94,9 @@ export default function RainChanse(props) {
     <div className={classes['rain-chanse']}>
       <h3 className={classes['rain-chanse__title']}>Daily Rain Chance (%)</h3>
       {loading ? (
-        <Skeleton width="100%" height={250} bgColor="var(--color-blue-6)" />
+        <Skeleton width="100%" height={300} bgColor="var(--color-blue-6)" />
       ) : (
-        <Chart options={graphStyle.options} series={graphStyle.series} type="bar" height="250" />
+        <Chart options={graphStyle.options} series={graphStyle.series} type="bar" height="300px" />
       )}
     </div>
   );

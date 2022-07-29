@@ -6,7 +6,11 @@
   border-radius: 20px 0 0 0px;
   padding: var(--padding-3);
 
-  @include mdScreen {
+  @include xlScreen {
     width: 50%;
+  }
+
+  @include mdScreen {
+    width: 100%;
   }
 }

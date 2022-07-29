@@ -1,8 +1,14 @@
+@import '../../responsive.scss';
+
 .location-info {
   display: flex;
   justify-content: space-between;
   align-items: center;
   height: var(--height-1);
+  @include xlScreen {
+    flex-direction: column;
+    text-align: center;
+  }
 
   &__title {
     font-size: 2rem;
@@ -10,6 +16,10 @@
     width: 60%;
     color: #fff;
     text-shadow: var(--shadow-text);
+    @include xlScreen {
+      width: 100%;
+      margin-bottom: var(--margin-1);
+    }
   }
 
   &__clock {

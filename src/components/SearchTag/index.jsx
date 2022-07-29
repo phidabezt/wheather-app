@@ -11,7 +11,8 @@ export default function SearchTag(props) {
       <form
         className={classes['search-tag']}
         onSubmit={(e) => {
-          onSearchSubmit(e);
+          e.preventDefault();
+          onSearchSubmit();
         }}
       >
         <input

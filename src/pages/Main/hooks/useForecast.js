@@ -2,15 +2,17 @@ import { useState, useEffect, useCallback } from 'react';
 import weatherApi from '@api/weatherApi';
 import { changeSpeedUnit, getLocalDay, getLocalMonth, getLocalTime } from '@utility/formatData';
 
-export default function useForecast(searchText, units, loading, setLoading, popUpError, setPopUpError) {
+export default function useForecast(searchText, units) {
   const [forecastData, setForecastData] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [popUpError, setPopUpError] = useState(false);
 
   // for default display when first load
   useEffect(() => {
     fetchWeatherData(searchText);
   }, [units]);
 
-  const fetchWeatherData = useCallback(async (searchText) => {
+  const fetchWeatherData = async (searchText) => {
     try {
       setLoading(true);
       const responseLocation = await weatherApi.getWeatherData('weather', {
@@ -27,10 +29,10 @@ export default function useForecast(searchText, units, loading, setLoading, popU
 
       // time info
       const { current, timezone } = responseForecast;
-      let localDay = getLocalDay(current.dt, timezone);
-      let localMonth = getLocalMonth(current.dt, timezone);
-      let localTime = getLocalTime(current.dt, timezone);
-      let localName = timezone.replace('/', ', ');
+      const localDay = getLocalDay(current.dt, timezone);
+      const localMonth = getLocalMonth(current.dt, timezone);
+      const localTime = getLocalTime(current.dt, timezone);
+      const localName = timezone.replace('/', ', ');
 
       // weather info
       let { sunrise, sunset, temp, pressure, humidity, uvi, wind_speed } = current;
@@ -39,7 +41,7 @@ export default function useForecast(searchText, units, loading, setLoading, popU
       description = description.replace(/\w\S*/g, (w) => w.replace(/^\w/, (c) => c.toUpperCase()));
       sunrise = getLocalTime(sunrise, timezone);
       sunset = getLocalTime(sunset, timezone);
-
+      temp = Math.round(temp);
       if (units === 'imperial') {
         wind_speed = changeSpeedUnit(wind_speed);
         wind_speed = Math.round(wind_speed * 100) / 100;
@@ -49,10 +51,11 @@ export default function useForecast(searchText, units, loading, setLoading, popU
       }
 
       // hourly temperature
-      let hourlyTemp = [];
+      const hourlyTemp = [];
       for (let hour = 0; hour <= 24; hour += 3) {
         if (hourlyTemp.length < 9) {
           let temp = responseForecast.hourly[hour].temp;
+          temp = Math.round(temp);
           if (units === 'imperial') {
             temp = `${temp}°F`;
           } else {
@@ -93,12 +96,15 @@ export default function useForecast(searchText, units, loading, setLoading, popU
         console.log('Failed to fetch weather data', err);
       }
     }
-  });
+  };
 
-  const handleSearchSubmit = (e) => {
-    e.preventDefault();
+  const fetchData = () => {
     fetchWeatherData(searchText);
   };
 
-  return { forecastData, handleSearchSubmit };
+  const closePopUp = () => {
+    setPopUpError(false);
+  };
+
+  return { forecastData, fetchData, loading, popUpError, closePopUp };
 }

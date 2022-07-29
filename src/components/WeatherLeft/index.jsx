@@ -14,7 +14,7 @@ function WeatherLeft(props) {
     onSearchSubmit,
     onSearchChange,
     onLocationClick,
-    searchRef,
+    value,
   } = props;
   return (
     <div className={classes['weather-left']}>
@@ -26,7 +26,7 @@ function WeatherLeft(props) {
         onSearchSubmit={onSearchSubmit}
         onSearchChange={onSearchChange}
         onLocationClick={onLocationClick}
-        searchRef={searchRef}
+        value={value}
       />
       <TodayOverview loading={loading} weatherInfoList={weatherInfoList} />
       <ChartArea hourlyTemp={forecastData.hourlyTemp} units={units} loading={loading} />

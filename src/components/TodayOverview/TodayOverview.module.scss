@@ -1,3 +1,5 @@
+@import '../../responsive.scss';
+
 .overview {
   margin: var(--margin-3) 0;
   display: block;
@@ -9,6 +11,10 @@
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(2, 1fr);
     gap: var(--padding-2);
+
+    @include xlScreen {
+      grid-template-columns: 1fr;
+    }
   }
 
   &__grid {
@@ -18,11 +24,34 @@
     padding: var(--padding-1);
     background-color: var(--color-blue-4);
     border-radius: 20px;
+
+    @include xlScreen {
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: 1fr;
+      align-items: center;
+    }
+
+    @include mdScreen {
+      text-align: center;
+    }
+
+    @include xsScreen {
+      text-align: left;
+      padding-left: unset;
+    }
   }
 
   &__icon {
     grid-row: 1 / 4;
     height: 5rem;
+    @include xlScreen {
+      grid-column: 1 / 2;
+      height: 3rem;
+    }
+
+    @include mdScreen {
+      margin: 0 auto;
+    }
   }
 
   &__title {
@@ -31,6 +60,10 @@
     font-size: 18px;
     font-weight: 450;
     color: var(--color-blue-5);
+    @include xlScreen {
+      grid-column: 2 / 3;
+      grid-row: 1;
+    }
   }
 
   &__value {
@@ -39,5 +72,9 @@
     font-size: 25px;
     font-weight: 700;
     color: var(--color-blue-2);
+    @include xlScreen {
+      grid-column: 3 / 4;
+      grid-row: 1;
+    }
   }
 }

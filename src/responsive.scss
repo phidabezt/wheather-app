@@ -1,0 +1,35 @@
+$XS: 480px;
+$SM: 600px;
+$MD: 1024px;
+$XL: 1085px;
+$XXL: 1350px;
+
+@mixin xsScreen {
+  @media (max-width: #{$XS}) {
+    @content;
+  }
+}
+
+@mixin smScreen {
+  @media (max-width: #{$SM}) {
+    @content;
+  }
+}
+
+@mixin mdScreen {
+  @media (max-width: #{$MD}) {
+    @content;
+  }
+}
+
+@mixin xlScreen {
+  @media (max-width: #{$XL}) {
+    @content;
+  }
+}
+
+@mixin xxlScreen {
+  @media (max-width: #{$XXL}) {
+    @content;
+  }
+}

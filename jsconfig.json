@@ -7,7 +7,8 @@
       "@api/*": ["src/api/*"],
       "@components/*": ["src/components/*"],
       "@constants/*": ["src/constants/*"],
-      "@utility/*": ["src/utility/*"]
+      "@utility/*": ["src/utility/*"],
+      "@pages/*": ["src/pages/*"]
     }
   }
 }

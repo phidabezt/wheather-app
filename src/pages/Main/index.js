@@ -1,11 +1,9 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState } from 'react';
 import './main.scss';
 import WeatherLeft from '@components/WeatherLeft';
 import WeatherRight from '@components/WeatherRight';
 import PopUp from '@components/PopUp';
-import weatherApi from '@api/weatherApi';
 import useForecast from '../Main/hooks/useForecast';
-import { changeSpeedUnit, getLocalDay, getLocalMonth, getLocalTime } from '@utility/formatData';
 
 import IconWind from '@animated/dust-wind.svg';
 import IconCloudRain from '@animated/raindrops.svg';

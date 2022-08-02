@@ -1,6 +1,4 @@
 import React from 'react';
-import IconSunRise from '@animated/clear-day.svg';
-import IconSunSet from '@animated/haze-day.svg';
 import classes from './SunInfo.module.scss';
 import Skeleton from '../Skeleton';
 

@@ -5,7 +5,6 @@ import Skeleton from '../Skeleton';
 
 export default function SearchBar(props) {
   const { forecastData, onSearchSubmit, onSearchChange, units, setUnits, loading, onLocationClick, value } = props;
-  const placeholder = 'Search for city ...';
 
   return (
     <div className={classes['search']}>
@@ -22,7 +21,6 @@ export default function SearchBar(props) {
 
       <div className={classes['search__interaction']}>
         <SearchTag
-          placeholder={placeholder}
           onSearchSubmit={onSearchSubmit}
           onSearchChange={onSearchChange}
           onLocationClick={onLocationClick}

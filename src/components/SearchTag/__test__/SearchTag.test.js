@@ -2,17 +2,6 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import SearchTag from '../index';
 
-const MockSearchTag = ({ value, onSearchChange, onSearchSubmit, onLocationClick }) => {
-  return (
-    <SearchTag
-      value={value}
-      onSearchChange={onSearchChange}
-      onSearchSubmit={onSearchSubmit}
-      onLocationClick={onLocationClick}
-    />
-  );
-};
-
 describe('button', () => {
   it('should render search button', () => {
     render(<SearchTag />);
@@ -35,7 +24,7 @@ describe('input', () => {
   });
 
   it('should display input value based on searchText correctly', () => {
-    render(<MockSearchTag value="test" />);
+    render(<SearchTag value="test" />);
     const input = screen.getByRole('textbox');
     expect(input.value).toBe('test');
   });
@@ -44,7 +33,7 @@ describe('input', () => {
 describe('interaction', () => {
   it('should able to type in input', async () => {
     const onSearchChange = jest.fn();
-    render(<MockSearchTag onSearchChange={onSearchChange} />);
+    render(<SearchTag onSearchChange={onSearchChange} />);
     const input = screen.getByRole('textbox');
     userEvent.type(input, 'test value');
     expect(input.value).toBe('test value');
@@ -52,7 +41,7 @@ describe('interaction', () => {
 
   it('should able to click search button', async () => {
     const onSearchSubmit = jest.fn();
-    render(<MockSearchTag value="test" onSearchSubmit={onSearchSubmit} />);
+    render(<SearchTag value="test" onSearchSubmit={onSearchSubmit} />);
     const button = screen.getByTitle('search');
     userEvent.click(button);
     expect(onSearchSubmit).toHaveBeenCalled();
@@ -61,7 +50,7 @@ describe('interaction', () => {
   it('should able to click location button', async () => {
     const onLocationClick = jest.fn();
     const onSearchSubmit = jest.fn();
-    render(<MockSearchTag value="Hanoi" onLocationClick={onLocationClick} onSearchSubmit={onSearchSubmit} />);
+    render(<SearchTag value="Hanoi" onLocationClick={onLocationClick} onSearchSubmit={onSearchSubmit} />);
     const button = screen.getByTitle('location');
     userEvent.click(button);
     expect(onLocationClick).toHaveBeenCalled();

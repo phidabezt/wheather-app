@@ -2,18 +2,15 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { mockForecastData } from '~/mocks/mockForecastData';
 import userEvent from '@testing-library/user-event';
 import SearchBar from '../index';
-import classes from '../SearchBar.module.scss';
-
-const MockSearchBar = ({ setUnits }) => <SearchBar forecastData={mockForecastData} setUnits={setUnits} />;
 
 describe('Date information', () => {
   it('should render month information correctly', () => {
-    render(<MockSearchBar />);
+    render(<SearchBar forecastData={mockForecastData} />);
     expect(screen.getByText(mockForecastData.localMonth)).toBeVisible();
   });
 
   it('should render day information correctly', () => {
-    render(<MockSearchBar />);
+    render(<SearchBar forecastData={mockForecastData} />);
     expect(screen.getByText(mockForecastData.localDay)).toBeVisible();
   });
 });
@@ -21,7 +18,7 @@ describe('Date information', () => {
 describe('Unit buttons', () => {
   describe('display', () => {
     it('should render unit buttons', () => {
-      render(<MockSearchBar />);
+      render(<SearchBar forecastData={mockForecastData} />);
       expect(screen.getByText('C°')).toBeVisible();
       expect(screen.getByText('F°')).toBeVisible();
     });
@@ -30,7 +27,7 @@ describe('Unit buttons', () => {
   describe('event', () => {
     it('should able to click unit buttons', async () => {
       const setUnits = jest.fn();
-      render(<MockSearchBar setUnits={setUnits} />);
+      render(<SearchBar forecastData={mockForecastData} setUnits={setUnits} />);
       const celsiusButton = screen.getByText('C°');
       const fahrenheitButton = screen.getByText('F°');
       userEvent.click(celsiusButton);
@@ -43,12 +40,12 @@ describe('Unit buttons', () => {
 
 describe('Input area', () => {
   it('should render input with placeholder="Search for city ..."', () => {
-    render(<MockSearchBar />);
+    render(<SearchBar forecastData={mockForecastData} />);
     expect(screen.getByPlaceholderText('Search for city ...')).toBeVisible();
   });
 
   it('should render interaction button', () => {
-    render(<MockSearchBar />);
+    render(<SearchBar forecastData={mockForecastData} />);
     expect(screen.getAllByRole('button').length).toBe(2);
   });
 });

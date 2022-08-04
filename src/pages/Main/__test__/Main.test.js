@@ -1,45 +1,53 @@
 import { render, screen, waitFor } from '@testing-library/react';
-import { mockForecastData } from '~/mocks/mockForecastData';
+import { mockForecastData } from '@constants/mockForecastData';
+import { mockCurrentWeather } from '@constants/mockCurrentWeather';
 import userEvent from '@testing-library/user-event';
-import { mockCurrentWeather } from '~/mocks/mockCurrentWeather';
-
-import { rest } from 'msw';
-import { setupServer } from 'msw/node';
 import MainPage from '../index';
+import axiosClient from 'axios';
 
-const server = setupServer(
-  rest.get(`/weather`, (_, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
-        ...mockCurrentWeather,
-      }),
-      ctx.set('Content-Type', 'application/json'),
-    );
-  }),
+const mockApiController = {
+  // mock a GET method
+  getCurrentWeather: jest.fn(() => axiosClient.get('/weather')),
+  getWeatherData: jest.fn(() => axiosClient.get('/onecall')),
+};
 
-  rest.get(`/onecall`, (_, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
-        ...mockForecastData,
-      }),
-      ctx.set('Content-Type', 'application/json'),
-    );
-  }),
-);
+// mock a fetching data function
+const fetchWeatherData = async (searchText) => {
+  const responseLocation = await mockApiController.getCurrentWeather({
+    params: {
+      q: searchText || 'Hanoi',
+      appid: process.env.REACT_APP_API_KEY,
+    },
+  });
 
-beforeEach(() => server.listen());
-afterEach(() => server.restoreHandlers());
-afterAll(() => server.close());
+  const { lat, lon } = responseLocation.coord;
+  const responseForecast = await mockApiController.getWeatherData({
+    params: {
+      lat,
+      lon,
+      appid: process.env.REACT_APP_API_KEY,
+      units: 'metric',
+    },
+  });
+  return responseForecast;
+};
 
-it('should render and display data in the first place', async () => {
-  render(<MainPage />);
-  // wait for search date to be displayed
-  await waitFor(() => screen.findByText(/uv index/i));
-  // wait for weather data to be displayed
-  expect(screen.getByText(/uv index/i)).toBeInTheDocument();
-  expect(screen.getByText(/wind speed/i)).toBeInTheDocument();
-  expect(screen.getByText(/pressure/i)).toBeInTheDocument();
-  expect(screen.getByText(/humidity/i)).toBeInTheDocument();
+describe('when API call is successful', () => {
+  afterAll(() => {
+    jest.resetAllMocks();
+  });
+
+  it('should return weather data', async () => {
+    mockApiController.getCurrentWeather.mockResolvedValueOnce({ ...mockCurrentWeather });
+    mockApiController.getWeatherData.mockResolvedValueOnce({ ...mockForecastData });
+    render(<MainPage />);
+
+    const result = await fetchWeatherData('London');
+
+    expect(mockApiController.getCurrentWeather).toHaveBeenCalledTimes(1);
+    expect(mockApiController.getWeatherData).toHaveBeenCalledTimes(1);
+    expect(result).toEqual(mockForecastData);
+  });
 });
+
+// when API call is unsuccessful

@@ -12,7 +12,7 @@ export default function useForecast(searchText, units) {
     fetchWeatherData(searchText);
   }, [units]);
 
-  const fetchWeatherData = async (searchText) => {
+  const fetchWeatherData = async () => {
     try {
       setLoading(true);
       const responseLocation = await weatherApi.getWeatherData('weather', {

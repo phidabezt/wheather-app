@@ -1,53 +1,86 @@
-import { render, screen, waitFor } from '@testing-library/react';
-import { mockForecastData } from '@constants/mockForecastData';
-import { mockCurrentWeather } from '@constants/mockCurrentWeather';
+import { render, screen, waitFor, fireEvent } from '@testing-library/react';
+import { mockForecastData, mockCurrentWeather } from '~/__fixtures__/mockData';
 import userEvent from '@testing-library/user-event';
 import MainPage from '../index';
-import axiosClient from 'axios';
+import SearchTag from '~/components/SearchTag';
+import axios from '../../../api/axiosClients';
 
-const mockApiController = {
-  // mock a GET method
-  getCurrentWeather: jest.fn(() => axiosClient.get('/weather')),
-  getWeatherData: jest.fn(() => axiosClient.get('/onecall')),
-};
+jest.mock('../../../api/axiosClients');
 
-// mock a fetching data function
-const fetchWeatherData = async (searchText) => {
-  const responseLocation = await mockApiController.getCurrentWeather({
-    params: {
-      q: searchText || 'Hanoi',
-      appid: process.env.REACT_APP_API_KEY,
-    },
-  });
-
-  const { lat, lon } = responseLocation.coord;
-  const responseForecast = await mockApiController.getWeatherData({
-    params: {
-      lat,
-      lon,
-      appid: process.env.REACT_APP_API_KEY,
-      units: 'metric',
-    },
-  });
-  return responseForecast;
-};
-
-describe('when API call is successful', () => {
-  afterAll(() => {
-    jest.resetAllMocks();
-  });
-
-  it('should return weather data', async () => {
-    mockApiController.getCurrentWeather.mockResolvedValueOnce({ ...mockCurrentWeather });
-    mockApiController.getWeatherData.mockResolvedValueOnce({ ...mockForecastData });
+describe('Load data', () => {
+  it('should load data from api', async () => {
+    axios.get = jest.fn().mockResolvedValueOnce(mockCurrentWeather).mockResolvedValueOnce(mockForecastData);
     render(<MainPage />);
 
-    const result = await fetchWeatherData('London');
+    await waitFor(() => {
+      expect(axios.get).toBeCalledWith('/weather', {
+        params: { appid: '773007840d4a26b4cd8cb4434fcb304a', q: 'Hanoi' },
+      });
+    });
+    await waitFor(() => {
+      expect(axios.get).toBeCalledWith('/onecall', {
+        params: { appid: '773007840d4a26b4cd8cb4434fcb304a', lon: 105.8412, lat: 21.0245, units: 'metric' },
+      });
+    });
+    expect(axios.get).toHaveBeenCalledTimes(2);
 
-    expect(mockApiController.getCurrentWeather).toHaveBeenCalledTimes(1);
-    expect(mockApiController.getWeatherData).toHaveBeenCalledTimes(1);
-    expect(result).toEqual(mockForecastData);
+    await waitFor(() => {
+      expect(screen.getByText('Wind Speed')).toBeInTheDocument();
+    });
+  });
+
+  it('should return weather data error', async () => {
+    axios.get = jest.fn().mockRejectedValue({ err: 'Failed to fetch data' });
+    render(<MainPage />);
+    await waitFor(() => {
+      expect(axios.get).toBeCalled();
+    });
+    await waitFor(() => {
+      expect(screen.queryByText('Wind Speed')).not.toBeInTheDocument();
+    });
   });
 });
 
-// when API call is unsuccessful
+describe('User Search', () => {
+  it('should search text when user enter valid input', async () => {
+    axios.get = jest.fn().mockResolvedValueOnce(mockCurrentWeather).mockResolvedValueOnce(mockForecastData);
+    const onSearchSubmit = jest.fn();
+    const onSearchChange = jest.fn();
+    render(
+      <MainPage>
+        <SearchTag onSearchSubmit={onSearchSubmit} onSearchChange={onSearchChange} />
+      </MainPage>,
+    );
+
+    await waitFor(() => {
+      expect(axios.get).toBeCalledWith('/weather', {
+        params: { appid: '773007840d4a26b4cd8cb4434fcb304a', q: 'Hanoi' },
+      });
+    });
+    await waitFor(() => {
+      expect(axios.get).toBeCalledWith('/onecall', {
+        params: { appid: '773007840d4a26b4cd8cb4434fcb304a', lon: 105.8412, lat: 21.0245, units: 'metric' },
+      });
+    });
+
+    userEvent.type(screen.getByPlaceholderText('Search for city ...'), 'Hanoi');
+    expect(screen.getByPlaceholderText('Search for city ...').value).toBe('Hanoi');
+
+    // userEvent.click(screen.getByRole('button', { name: 'search-button' }));
+
+    console.log(axios.get.mock.calls);
+    expect(axios.get).toHaveBeenCalledTimes(2);
+    // expect(onSearchSubmit).toHaveBeenCalledTimes(1);
+  });
+
+  // it('should pop up message when user enter invalid input', async () => {
+  //   axios.get = jest.fn().mockRejectedValue({ err: '404 - City not found' });
+  //   render(<MainPage />);
+  //   await waitFor(() => {
+  //     expect(axios.get).toBeCalled();
+  //   });
+  //   await waitFor(() => {
+  //     expect(screen.queryByText('Wind Speed')).not.toBeInTheDocument();
+  //   });
+  // });
+});

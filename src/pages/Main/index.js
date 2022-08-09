@@ -23,6 +23,7 @@ export default function MainPage() {
   };
 
   const handleLocationClick = () => {
+    if (searchText === '') return;
     if (searchText === 'Hanoi') return;
     setSearchText('Hanoi');
   };

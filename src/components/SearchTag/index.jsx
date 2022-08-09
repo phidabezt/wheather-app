@@ -10,8 +10,10 @@ export default function SearchTag(props) {
     <>
       <form
         className={classes['search-tag']}
+        aria-label="search-form"
         onSubmit={(e) => {
           e.preventDefault();
+          if (value === '') return;
           onSearchSubmit();
         }}
       >
@@ -26,14 +28,19 @@ export default function SearchTag(props) {
             onSearchChange(e);
           }}
         />
-        <button type="submit" className={classes['search-tag__button']} button-title="Search">
+        <button
+          type="submit"
+          className={classes['search-tag__button']}
+          button-title="Search"
+          aria-label="search-button"
+        >
           <FontAwesomeIcon icon={faSearch} className={classes['search-tag__icon']} title="search" />
         </button>
         <button
           className={classes['search-tag__location']}
           button-title="Your location"
-          onClick={(e) => {
-            onLocationClick(e);
+          onClick={() => {
+            onLocationClick();
           }}
         >
           <FontAwesomeIcon icon={faMapLocationDot} className={classes['search-tag__icon']} title="location" />

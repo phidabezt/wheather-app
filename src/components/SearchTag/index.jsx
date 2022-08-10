@@ -36,16 +36,16 @@ export default function SearchTag(props) {
         >
           <FontAwesomeIcon icon={faSearch} className={classes['search-tag__icon']} title="search" />
         </button>
-        <button
-          className={classes['search-tag__location']}
-          button-title="Your location"
-          onClick={() => {
-            onLocationClick();
-          }}
-        >
-          <FontAwesomeIcon icon={faMapLocationDot} className={classes['search-tag__icon']} title="location" />
-        </button>
       </form>
+      <button
+        className={classes['search-tag__location']}
+        button-title="Your location"
+        onClick={() => {
+          onLocationClick();
+        }}
+      >
+        <FontAwesomeIcon icon={faMapLocationDot} className={classes['search-tag__icon']} title="location" />
+      </button>
     </>
   );
 }

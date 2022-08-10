@@ -28,7 +28,7 @@ export default function MainPage() {
     setSearchText('Hanoi');
   };
 
-  const handleClose = () => closePopUp(false);
+  const handleClose = () => closePopUp();
 
   const weatherInfoList = [
     { id: 1, name: 'Wind Speed', iconSrc: IconWind, value: `${forecastData.wind_speed} m/s` },
@@ -44,8 +44,7 @@ export default function MainPage() {
 
   return (
     <section className="weather">
-      {popUpError ? <PopUp onClose={handleClose} /> : null}
-
+      {popUpError && <PopUp onClose={handleClose} />}
       <WeatherLeft
         forecastData={forecastData}
         units={units}

@@ -90,6 +90,7 @@ export default function useForecast(searchText, units) {
       setLoading(false);
     } catch (err) {
       if (err?.response?.status === 404) {
+        console.log('HAVE TO FETCH DATA ERROR11');
         setPopUpError(true);
         setLoading(false);
       } else {

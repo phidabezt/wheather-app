@@ -8,42 +8,29 @@ import {
 import userEvent from '@testing-library/user-event';
 import MainPage from '../index';
 import axios from '../../../api/axiosClients';
-import useForecast from '../hooks/useForecast';
+import _ from 'lodash';
 
 jest.mock('../../../api/axiosClients');
-jest.mock('../hooks/useForecast');
 
 describe('Load data', () => {
   it('should show skeleton loading when data is being fetched', () => {
-    useForecast.mockReturnValue({
-      forecastData: {},
-      fetchData: jest.fn(),
-      loading: true,
-      popUpError: false,
-      closePopUp: jest.fn(),
-      timeout: false,
-      closeTimeout: jest.fn(),
-    });
     render(<MainPage />);
     expect(screen.getAllByLabelText('skeleton-loading')).toBeTruthy();
   });
 
-  it('should show error message when data is not fetched', () => {
-    useForecast.mockReturnValue({
-      forecastData: {},
-      fetchData: jest.fn(),
-      loading: false,
-      popUpError: true,
-      closePopUp: jest.fn(),
-      timeout: false,
-      closeTimeout: jest.fn(),
+  it('should show error message when timeout jumps in', async () => {
+    axios.get = jest.fn().mockRejectedValue({
+      message: 'timeout',
     });
     render(<MainPage />);
-    expect(screen.getByText("Sorry, we're having some trouble ... : (")).toBeTruthy();
+    await waitFor(() => {
+      expect(screen.getByText("Sorry, we're having some trouble ... : (")).toBeTruthy();
+    });
   });
 
   it('should load data from api', async () => {
     axios.get = jest.fn().mockResolvedValueOnce(mockCurrentWeather).mockResolvedValueOnce(mockForecastData);
+
     render(<MainPage />);
 
     await waitFor(() => {
@@ -56,21 +43,11 @@ describe('Load data', () => {
         params: { appid: '773007840d4a26b4cd8cb4434fcb304a', lon: 105.8412, lat: 21.0245, units: 'metric' },
       });
     });
+
     expect(axios.get).toHaveBeenCalledTimes(2);
 
     await waitFor(() => {
       expect(screen.getByText('Wind Speed')).toBeInTheDocument();
-    });
-  });
-
-  it('should return weather data error', async () => {
-    axios.get = jest.fn().mockRejectedValue({ err: 'Failed to fetch data' });
-    render(<MainPage />);
-    await waitFor(() => {
-      expect(axios.get).toBeCalled();
-    });
-    await waitFor(() => {
-      expect(screen.queryByText('Wind Speed')).not.toBeInTheDocument();
     });
   });
 });
@@ -95,6 +72,7 @@ describe('User Search', () => {
         params: { appid: '773007840d4a26b4cd8cb4434fcb304a', lon: -0.1257, lat: 51.5085, units: 'metric' },
       });
     });
+
     expect(axios.get).toBeCalledTimes(2);
   });
 

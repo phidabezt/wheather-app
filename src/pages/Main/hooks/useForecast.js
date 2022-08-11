@@ -95,9 +95,9 @@ export default function useForecast(searchText, units) {
       if (err?.response?.data?.cod === '404') {
         setPopUpError(true);
         setLoading(false);
-      } else {
-        console.log('Failed to fetch weather data\n', err);
+      } else if (err?.message.includes('timeout')) {
         setTimeout(true);
+        setLoading(false);
       }
     }
   };

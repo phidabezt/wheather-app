@@ -55,6 +55,6 @@ describe('interaction', () => {
     userEvent.click(button);
     expect(onLocationClick).toHaveBeenCalled();
     expect(onSearchSubmit).toHaveBeenCalled();
-    expect(screen.getByRole('textbox').value).toBe('Hanoi');
+    expect(screen.getByPlaceholderText('Search for city ...').value).toBe('Hanoi');
   });
 });

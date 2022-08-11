@@ -1,4 +1,4 @@
-import { render, screen, waitFor, fireEvent } from '@testing-library/react';
+import { render, screen, waitFor, fireEvent, getByText } from '@testing-library/react';
 import {
   mockForecastData,
   mockCurrentWeather,
@@ -8,42 +8,72 @@ import {
 import userEvent from '@testing-library/user-event';
 import MainPage from '../index';
 import axios from '../../../api/axiosClients';
+import useForecast from '../hooks/useForecast';
 
 jest.mock('../../../api/axiosClients');
+jest.mock('../hooks/useForecast');
 
-// describe('Load data', () => {
-//   it('should load data from api', async () => {
-//     axios.get = jest.fn().mockResolvedValueOnce(mockCurrentWeather).mockResolvedValueOnce(mockForecastData);
-//     render(<MainPage />);
+describe('Load data', () => {
+  it('should show skeleton loading when data is being fetched', () => {
+    useForecast.mockReturnValue({
+      forecastData: {},
+      fetchData: jest.fn(),
+      loading: true,
+      popUpError: false,
+      closePopUp: jest.fn(),
+      timeout: false,
+      closeTimeout: jest.fn(),
+    });
+    render(<MainPage />);
+    expect(screen.getAllByLabelText('skeleton-loading')).toBeTruthy();
+  });
 
-//     await waitFor(() => {
-//       expect(axios.get).toBeCalledWith('/weather', {
-//         params: { appid: '773007840d4a26b4cd8cb4434fcb304a', q: 'Hanoi' },
-//       });
-//     });
-//     await waitFor(() => {
-//       expect(axios.get).toBeCalledWith('/onecall', {
-//         params: { appid: '773007840d4a26b4cd8cb4434fcb304a', lon: 105.8412, lat: 21.0245, units: 'metric' },
-//       });
-//     });
-//     expect(axios.get).toHaveBeenCalledTimes(2);
+  it('should show error message when data is not fetched', () => {
+    useForecast.mockReturnValue({
+      forecastData: {},
+      fetchData: jest.fn(),
+      loading: false,
+      popUpError: true,
+      closePopUp: jest.fn(),
+      timeout: false,
+      closeTimeout: jest.fn(),
+    });
+    render(<MainPage />);
+    expect(screen.getByText("Sorry, we're having some trouble ... : (")).toBeTruthy();
+  });
 
-//     await waitFor(() => {
-//       expect(screen.getByText('Wind Speed')).toBeInTheDocument();
-//     });
-//   });
+  it('should load data from api', async () => {
+    axios.get = jest.fn().mockResolvedValueOnce(mockCurrentWeather).mockResolvedValueOnce(mockForecastData);
+    render(<MainPage />);
 
-//   it('should return weather data error', async () => {
-//     axios.get = jest.fn().mockRejectedValue({ err: 'Failed to fetch data' });
-//     render(<MainPage />);
-//     await waitFor(() => {
-//       expect(axios.get).toBeCalled();
-//     });
-//     await waitFor(() => {
-//       expect(screen.queryByText('Wind Speed')).not.toBeInTheDocument();
-//     });
-//   });
-// });
+    await waitFor(() => {
+      expect(axios.get).toBeCalledWith('/weather', {
+        params: { appid: '773007840d4a26b4cd8cb4434fcb304a', q: 'Hanoi' },
+      });
+    });
+    await waitFor(() => {
+      expect(axios.get).toBeCalledWith('/onecall', {
+        params: { appid: '773007840d4a26b4cd8cb4434fcb304a', lon: 105.8412, lat: 21.0245, units: 'metric' },
+      });
+    });
+    expect(axios.get).toHaveBeenCalledTimes(2);
+
+    await waitFor(() => {
+      expect(screen.getByText('Wind Speed')).toBeInTheDocument();
+    });
+  });
+
+  it('should return weather data error', async () => {
+    axios.get = jest.fn().mockRejectedValue({ err: 'Failed to fetch data' });
+    render(<MainPage />);
+    await waitFor(() => {
+      expect(axios.get).toBeCalled();
+    });
+    await waitFor(() => {
+      expect(screen.queryByText('Wind Speed')).not.toBeInTheDocument();
+    });
+  });
+});
 
 describe('User Search', () => {
   it('should search text when user enter valid input', async () => {
@@ -69,21 +99,24 @@ describe('User Search', () => {
   });
 
   it('should pop up error message when user enter invalid input', async () => {
-    render(<MainPage />);
     axios.get = jest.fn().mockRejectedValueOnce({
-      cod: '404',
-      message: 'city not found',
+      response: {
+        data: {
+          cod: '404',
+          message: 'city not found',
+        },
+      },
     });
-    userEvent.type(screen.getByPlaceholderText('Search for city ...'), 'abcdef');
+    render(<MainPage />);
     await waitFor(() => {
-      expect(screen.getByPlaceholderText('Search for city ...')).toHaveValue('abcdef');
+      expect(screen.getByText('Wind Speed')).toBeInTheDocument();
     });
-
-    userEvent.click(screen.getByRole('button', { name: 'search-button' }));
-
     await waitFor(() => {
       expect(axios.get).toBeCalled();
     });
     expect(screen.getByText('May be your city input is invalid')).toBeInTheDocument();
+
+    userEvent.click(screen.getByRole('button', { name: 'close-button' }));
+    expect(screen.queryByText('May be your city input is invalid')).not.toBeInTheDocument();
   });
 });

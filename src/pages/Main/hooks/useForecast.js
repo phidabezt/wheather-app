@@ -6,6 +6,7 @@ export default function useForecast(searchText, units) {
   const [forecastData, setForecastData] = useState({});
   const [loading, setLoading] = useState(true);
   const [popUpError, setPopUpError] = useState(false);
+  const [timeout, setTimeout] = useState(false);
 
   // for default display when first load
   useEffect(() => {
@@ -15,10 +16,12 @@ export default function useForecast(searchText, units) {
   const fetchWeatherData = async () => {
     try {
       setLoading(true);
-      const responseLocation = await weatherApi.getWeatherData('weather', {
-        q: searchText || 'Hanoi',
-        appid: process.env.REACT_APP_API_KEY,
-      });
+      const responseLocation =
+        (await weatherApi.getWeatherData('weather', {
+          q: searchText || 'Hanoi',
+          appid: process.env.REACT_APP_API_KEY,
+        })) || {};
+      if (!responseLocation.coord) return;
       const { lat, lon } = responseLocation.coord;
       const responseForecast = await weatherApi.getWeatherData('onecall', {
         lat,
@@ -89,12 +92,12 @@ export default function useForecast(searchText, units) {
       });
       setLoading(false);
     } catch (err) {
-      if (err?.response?.status === 404) {
-        console.log('HAVE TO FETCH DATA ERROR11');
+      if (err?.response?.data?.cod === '404') {
         setPopUpError(true);
         setLoading(false);
       } else {
-        console.log('Failed to fetch weather data', err);
+        console.log('Failed to fetch weather data\n', err);
+        setTimeout(true);
       }
     }
   };
@@ -107,5 +110,9 @@ export default function useForecast(searchText, units) {
     setPopUpError(false);
   };
 
-  return { forecastData, fetchData, loading, popUpError, closePopUp };
+  const closeTimeout = () => {
+    setTimeout(false);
+  };
+
+  return { forecastData, fetchData, loading, popUpError, closePopUp, timeout, closeTimeout };
 }

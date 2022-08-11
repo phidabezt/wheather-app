@@ -7,6 +7,7 @@ export default function Skeleton(props) {
     <div
       className={classes['skeleton']}
       style={{ width, height, backgroundColor: bgColor || 'var(--color-blue-4)' }}
+      aria-label="skeleton-loading"
     ></div>
   );
 }

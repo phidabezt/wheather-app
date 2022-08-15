@@ -1,3 +1,10 @@
+import IconWind from '@animated/dust-wind.svg';
+import IconCloudRain from '@animated/raindrops.svg';
+import IconPressure from '@animated/tornado.svg';
+import IconSun from '@animated/uv-index.svg';
+import IconSunRise from '@animated/clear-day.svg';
+import IconSunSet from '@animated/haze-day.svg';
+
 const mockCurrentWeather = {
   coord: {
     lon: 105.8412,
@@ -1843,6 +1850,13 @@ const mockTransformedForecastData = {
   dailyRainChance: [100, 100, 100, 100, 100, 100, 99],
 };
 
+const mockWeatherInfoList = [
+  { id: 1, name: 'Wind Speed', iconSrc: IconWind, value: `${mockTransformedForecastData.wind_speed} m/s` },
+  { id: 2, name: 'Humidity', iconSrc: IconCloudRain, value: `${mockTransformedForecastData.humidity} %` },
+  { id: 3, name: 'Pressure', iconSrc: IconPressure, value: `${mockTransformedForecastData.pressure} hPa` },
+  { id: 4, name: 'UV Index', iconSrc: IconSun, value: `${mockTransformedForecastData.uvi}` },
+];
+
 const mockCurrentWeatherLondon = {
   coord: {
     lon: -0.1257,
@@ -3591,4 +3605,5 @@ export {
   mockCurrentWeatherLondon,
   mockForecastDataLondon,
   mockTransformedForecastData,
+  mockWeatherInfoList,
 };

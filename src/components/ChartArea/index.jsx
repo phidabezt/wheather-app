@@ -6,6 +6,7 @@ import Skeleton from '../Skeleton';
 
 export default function ChartArea(props) {
   const { hourlyTemp, units, loading } = props;
+
   const graphStyle = {
     options: {
       chart: {

@@ -15,10 +15,7 @@ import IconSunSet from '@animated/haze-day.svg';
 export default function MainPage() {
   const [searchText, setSearchText] = useState('');
   const [units, setUnits] = useState('metric');
-  const { forecastData, fetchData, loading, popUpError, closePopUp, timeout, closeTimeout } = useForecast(
-    searchText,
-    units,
-  );
+  const { forecastData, fetchData, loading, popUpError, closePopUp } = useForecast(searchText, units);
 
   const handleSearchChange = (e) => {
     e.preventDefault();
@@ -26,8 +23,6 @@ export default function MainPage() {
   };
 
   const handleLocationClick = () => {
-    if (searchText === '') return;
-    if (searchText === 'Hanoi') return;
     setSearchText('Hanoi');
   };
 
@@ -48,24 +43,18 @@ export default function MainPage() {
   return (
     <section className="weather">
       {popUpError && <PopUp onClose={handleClose} />}
-      {timeout ? (
-        <h3 className="timeout-messages">Sorry, we're having some trouble ... : (</h3>
-      ) : (
-        <>
-          <WeatherLeft
-            forecastData={forecastData}
-            units={units}
-            setUnits={setUnits}
-            loading={loading}
-            weatherInfoList={weatherInfoList}
-            onSearchSubmit={fetchData}
-            onSearchChange={handleSearchChange}
-            onLocationClick={handleLocationClick}
-            value={searchText}
-          />
-          <WeatherRight forecastData={forecastData} units={units} loading={loading} sunInfoList={sunInfoList} />
-        </>
-      )}
+      <WeatherLeft
+        forecastData={forecastData}
+        units={units}
+        setUnits={setUnits}
+        loading={loading}
+        weatherInfoList={weatherInfoList}
+        onSearchSubmit={fetchData}
+        onSearchChange={handleSearchChange}
+        onLocationClick={handleLocationClick}
+        value={searchText}
+      />
+      <WeatherRight forecastData={forecastData} units={units} loading={loading} sunInfoList={sunInfoList} />
     </section>
   );
 }

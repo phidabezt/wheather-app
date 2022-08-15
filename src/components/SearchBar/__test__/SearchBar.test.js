@@ -25,7 +25,7 @@ describe('Unit buttons', () => {
   });
 
   describe('event', () => {
-    it('should able to click unit buttons', async () => {
+    it('should be able to click unit buttons', async () => {
       const setUnits = jest.fn();
       render(<SearchBar forecastData={mockTransformedForecastData} setUnits={setUnits} />);
       const celsiusButton = screen.getByText('C°');

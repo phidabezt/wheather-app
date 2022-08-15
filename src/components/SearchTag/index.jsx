@@ -39,6 +39,7 @@ export default function SearchTag(props) {
         <button
           className={classes['search-tag__location']}
           button-title="Your location"
+          aria-label="location-button"
           onClick={() => {
             onLocationClick();
           }}

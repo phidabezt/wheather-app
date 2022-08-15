@@ -6,7 +6,6 @@ export default function useForecast(searchText, units) {
   const [forecastData, setForecastData] = useState({});
   const [loading, setLoading] = useState(true);
   const [popUpError, setPopUpError] = useState(false);
-  const [timeout, setTimeout] = useState(false);
 
   // for default display when first load
   useEffect(() => {
@@ -90,15 +89,13 @@ export default function useForecast(searchText, units) {
         hourlyTemp,
         dailyRainChance,
       });
-      setLoading(false);
     } catch (err) {
-      if (err?.response?.data?.cod === '404') {
+      if (err.cod === '404') {
         setPopUpError(true);
-        setLoading(false);
-      } else if (err?.message.includes('timeout')) {
-        setTimeout(true);
-        setLoading(false);
+        return;
       }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -110,9 +107,5 @@ export default function useForecast(searchText, units) {
     setPopUpError(false);
   };
 
-  const closeTimeout = () => {
-    setTimeout(false);
-  };
-
-  return { forecastData, fetchData, loading, popUpError, closePopUp, timeout, closeTimeout };
+  return { forecastData, fetchData, loading, popUpError, closePopUp };
 }

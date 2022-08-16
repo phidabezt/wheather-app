@@ -1,11 +1,11 @@
-import { screen, render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { mockTransformedForecastData } from '~/__fixtures__/mockData';
 import RainChanse from '..';
 
 describe('Rain Chance', () => {
   it('should render properly', () => {
     const props = { dailyRainChance: mockTransformedForecastData.dailyRainChance, loading: false };
-    const { container } = render(<RainChanse {...props} />);
+    render(<RainChanse {...props} />);
     expect(screen.getByTestId('weather-chart')).toBeInTheDocument();
   });
 

@@ -1,6 +1,6 @@
-import { render, screen, waitFor } from '@testing-library/react';
-import { mockTransformedForecastData } from '~/__fixtures__/mockData';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { mockTransformedForecastData } from '~/__fixtures__/mockData';
 import SearchBar from '../index';
 
 describe('Date information', () => {

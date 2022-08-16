@@ -1,20 +1,22 @@
-import { render, screen, waitFor } from '@testing-library/react';
-import {
-  mockForecastData,
-  mockCurrentWeather,
-  mockForecastDataLondon,
-  mockCurrentWeatherLondon,
-} from '~/__fixtures__/mockData';
+import { render, screen, waitFor, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import {
+  mockCurrentWeather,
+  mockCurrentWeatherLondon,
+  mockForecastData,
+  mockForecastDataLondon,
+} from '~/__fixtures__/mockData';
 import MainPage from '..';
 import axios from '../../../api/axiosClients';
 
 jest.mock('../../../api/axiosClients');
 
 describe('Load data', () => {
-  it('should show skeleton loading when data is being fetched', () => {
+  it('should show skeleton loading when data is being fetched', async () => {
     render(<MainPage />);
-    expect(screen.getAllByLabelText('skeleton-loading')).toBeTruthy();
+    await waitFor(() => {
+      expect(screen.getAllByLabelText('skeleton-loading')).toBeTruthy();
+    });
   });
 
   it('should load data from api', async () => {

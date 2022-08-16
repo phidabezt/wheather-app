@@ -1,11 +1,11 @@
-import { screen, render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { mockSunInfoList } from '~/__fixtures__/mockData';
 import SunInfo from '..';
 
 describe('Basic Info', () => {
   it('should render properly', () => {
     const props = { sunInfoList: mockSunInfoList, loading: false };
-    const { container } = render(<SunInfo {...props} />);
+    render(<SunInfo {...props} />);
     const sunRise = mockSunInfoList[0].value;
     const sunSet = mockSunInfoList[1].value;
     expect(screen.getByText(sunRise)).toBeInTheDocument();

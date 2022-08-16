@@ -12,7 +12,6 @@ describe('Chart Area', () => {
     };
 
     render(<ChartArea {...props} />);
-    screen.debug();
     expect(screen.getByTestId('weather-chart')).toBeInTheDocument();
   });
 

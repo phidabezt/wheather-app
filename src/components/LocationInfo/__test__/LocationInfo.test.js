@@ -6,9 +6,7 @@ describe('Location Info', () => {
   it('should render properly', () => {
     const props = { forecastData: mockTransformedForecastData, loading: false };
     const { container } = render(<LocationInfo {...props} />);
-    screen.debug();
     expect(screen.getByText(mockTransformedForecastData.localName)).toBeInTheDocument();
-    expect(container.getElementsByClassName('location-info__clock').length).toBe(1);
     expect(screen.getByText(mockTransformedForecastData.localTime)).toBeInTheDocument();
   });
 

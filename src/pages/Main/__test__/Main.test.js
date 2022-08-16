@@ -104,6 +104,5 @@ describe('User Search', () => {
     });
 
     expect(axios.get).toBeCalledTimes(2);
-    screen.debug();
   });
 });

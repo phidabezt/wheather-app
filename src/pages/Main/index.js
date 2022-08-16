@@ -1,11 +1,9 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState } from 'react';
 import './main.scss';
 import WeatherLeft from '@components/WeatherLeft';
 import WeatherRight from '@components/WeatherRight';
 import PopUp from '@components/PopUp';
-import weatherApi from '@api/weatherApi';
 import useForecast from '../Main/hooks/useForecast';
-import { changeSpeedUnit, getLocalDay, getLocalMonth, getLocalTime } from '@utility/formatData';
 
 import IconWind from '@animated/dust-wind.svg';
 import IconCloudRain from '@animated/raindrops.svg';
@@ -25,11 +23,10 @@ export default function MainPage() {
   };
 
   const handleLocationClick = () => {
-    if (searchText === 'Hanoi') return;
     setSearchText('Hanoi');
   };
 
-  const handleClose = () => closePopUp(false);
+  const handleClose = () => closePopUp();
 
   const weatherInfoList = [
     { id: 1, name: 'Wind Speed', iconSrc: IconWind, value: `${forecastData.wind_speed} m/s` },
@@ -45,8 +42,7 @@ export default function MainPage() {
 
   return (
     <section className="weather">
-      {popUpError ? <PopUp onClose={handleClose} /> : null}
-
+      {popUpError && <PopUp onClose={handleClose} />}
       <WeatherLeft
         forecastData={forecastData}
         units={units}

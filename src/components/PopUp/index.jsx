@@ -10,7 +10,14 @@ export default function PopUp(props) {
       <div className={classes['popup-inner']}>
         <FontAwesomeIcon icon={faBan} className={classes['popup__icon']} />
         <h3>May be your city input is invalid</h3>
-        <button type="button" autoFocus className={classes['popup__close']} tabIndex={0} onClick={onClose}>
+        <button
+          type="button"
+          aria-label="close-button"
+          autoFocus
+          className={classes['popup__close']}
+          tabIndex={0}
+          onClick={onClose}
+        >
           OKAY
         </button>
       </div>

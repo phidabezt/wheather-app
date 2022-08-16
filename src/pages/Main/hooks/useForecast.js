@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import weatherApi from '@api/weatherApi';
 import { changeSpeedUnit, getLocalDay, getLocalMonth, getLocalTime } from '@utility/formatData';
 
@@ -12,13 +12,15 @@ export default function useForecast(searchText, units) {
     fetchWeatherData(searchText);
   }, [units]);
 
-  const fetchWeatherData = async (searchText) => {
+  const fetchWeatherData = async () => {
     try {
       setLoading(true);
-      const responseLocation = await weatherApi.getWeatherData('weather', {
-        q: searchText || 'Hanoi',
-        appid: process.env.REACT_APP_API_KEY,
-      });
+      const responseLocation =
+        (await weatherApi.getWeatherData('weather', {
+          q: searchText || 'Hanoi',
+          appid: process.env.REACT_APP_API_KEY,
+        })) || {};
+      if (!responseLocation.coord) return;
       const { lat, lon } = responseLocation.coord;
       const responseForecast = await weatherApi.getWeatherData('onecall', {
         lat,
@@ -87,14 +89,13 @@ export default function useForecast(searchText, units) {
         hourlyTemp,
         dailyRainChance,
       });
-      setLoading(false);
     } catch (err) {
-      if (err?.response?.status === 404) {
+      if (err.cod === '404') {
         setPopUpError(true);
-        setLoading(false);
-      } else {
-        console.log('Failed to fetch weather data', err);
+        return;
       }
+    } finally {
+      setLoading(false);
     }
   };
 

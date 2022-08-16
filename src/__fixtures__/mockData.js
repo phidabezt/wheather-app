@@ -1857,6 +1857,11 @@ const mockWeatherInfoList = [
   { id: 4, name: 'UV Index', iconSrc: IconSun, value: `${mockTransformedForecastData.uvi}` },
 ];
 
+const mockSunInfoList = [
+  { id: 1, name: 'rise', iconSrc: IconSunRise, value: mockTransformedForecastData.sunrise },
+  { id: 2, name: 'set', iconSrc: IconSunSet, value: mockTransformedForecastData.sunset },
+];
+
 const mockCurrentWeatherLondon = {
   coord: {
     lon: -0.1257,
@@ -3606,4 +3611,5 @@ export {
   mockForecastDataLondon,
   mockTransformedForecastData,
   mockWeatherInfoList,
+  mockSunInfoList,
 };
